@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">EcsFloralies</string>
+    <string name="file_exsists_alert">Le fichier existe déjà. Voulez vous le remplacer?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+
+    <string name="capture_button_alt">Capture</string>
+    <string name="switch_camera_button_alt">Switch camera</string>
+    <string name="gallery_button_alt">Gallery</string>
+    <string name="back_button_alt">Back</string>
+    <string name="share_button_alt">Share</string>
+    <string name="share_hint">Share using</string>
+    <string name="capture_mode_camera">Camera</string>
+    <string name="capture_mode_hdr">HDR</string>
+    <string name="capture_mode_night">Night</string>
+    <string name="delete_button_alt">Delete</string>
+    <string name="delete_dialog">Delete current photo?</string>
+    <string name="delete_title">Confirm</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,389 @@
+{
+  "buildings": [
+    {
+      "name": "A",
+      "stages": [
+        {
+          "level": 0,
+          "apartments": [
+            {
+              "type": "F2",
+              "counter1": "CUI",
+              "counter2": "WC"
+            },
+            {
+              "type": "F3 G ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
+            },
+            {
+              "type": "F5 D ASC",
+              "counter1": "PLA",
+              "counter2": "WC"
+            }
+          ]
+        },
+        {
+          "level": 1,
+          "apartments": [
+            {
+              "type": "F2 FACE ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
+            },
+            {
+              "type": "F2 MUR ACS",
+              "counter2": "CUI",
+              "counter1": "PLA"
+            },
+            {
+              "type": "F3 G ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
+            },
+            {
+              "type": "F4 D ASC",
+              "counter1": "PLA",
+              "counter2": "WC"
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "apartments": [
+            {
+              "type": "F2 FACE ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
+            },
+            {
+              "type": "F2 MUR ACS",
+              "counter2": "CUI",
+              "counter1": "PLA"
+            },
+            {
+              "type": "F3 G ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
+            },
+            {
+              "type": "F4 D ASC",
+              "counter1": "PLA",
+              "counter2": "WC"
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "apartments": [
+            {
+              "type": "F2 FACE ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
+            },
+            {
+              "type": "F2 MUR ACS",
+              "counter2": "CUI",
+              "counter1": "PLA"
+            },
+            {
+              "type": "F3 G ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
+            },
+            {
+              "type": "F4 D ASC",
+              "counter1": "PLA",
+              "counter2": "WC"
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "apartments": [
+            {
+              "type": "F2 FACE ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
+            },
+            {
+              "type": "F2 MUR ACS",
+              "counter2": "CUI",
+              "counter1": "PLA"
+            },
+            {
+              "type": "F3 G ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
+            },
+            {
+              "type": "F4 D ASC",
+              "counter1": "PLA",
+              "counter2": "WC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B",
+      "stages": [
+        {
+          "level": 0,
+          "apartments": [
+            {
+              "type": "2 face entree",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 fond",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 face",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 1,
+          "apartments": [
+            {
+              "type": "Studio",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2P",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "5",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "apartments": [
+            {
+              "type": "Studio",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2P",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "5",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "apartments": [
+            {
+              "type": "Studio",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2P",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "5",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "apartments": [
+            {
+              "type": "Studio",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2P",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "5",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C",
+      "stages": [
+        {
+          "level": 0,
+          "apartments": [
+            {
+              "type": "2 face entree",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 fond",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 face",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 1,
+          "apartments": [
+            {
+              "type": "2 face asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 cote asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "4",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "apartments": [
+            {
+              "type": "2 face asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 cote asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "4",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "apartments": [
+            {
+              "type": "2 face asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 cote asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "4",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "apartments": [
+            {
+              "type": "2 face asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "2 cote asc",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "3",
+              "counter1": "wc",
+              "counter2": "sdb"
+            },
+            {
+              "type": "4",
+              "counter1": "wc",
+              "counter2": "sdb"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
