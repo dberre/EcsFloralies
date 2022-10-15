@@ -12,13 +12,13 @@
               "counter2": "WC"
             },
             {
-              "type": "F3 G ASC",
+              "type": "F3_G_ASC",
               "counter1": "CUI",
               "counter2": "WC"
             },
             {
-              "type": "F5 D ASC",
-              "counter1": "PLA",
+              "type": "F5_D_ASC",
+              "counter1": "CUI",
               "counter2": "WC"
             }
           ]
@@ -27,23 +27,23 @@
           "level": 1,
           "apartments": [
             {
-              "type": "F2 FACE ASC",
+              "type": "F2_FACE_ASC",
               "counter1": "CUI",
               "counter2": "SDB"
             },
             {
-              "type": "F2 MUR ACS",
+              "type": "F2_MUR_ACS",
               "counter2": "CUI",
-              "counter1": "PLA"
+              "counter1": "SDB"
             },
             {
-              "type": "F3 G ASC",
+              "type": "F3_G_ASC",
               "counter1": "CUI",
               "counter2": "WC"
             },
             {
-              "type": "F4 D ASC",
-              "counter1": "PLA",
+              "type": "F4_D_ASC",
+              "counter1": "CUI",
               "counter2": "WC"
             }
           ]
@@ -52,23 +52,23 @@
           "level": 2,
           "apartments": [
             {
-              "type": "F2 FACE ASC",
+              "type": "F2_FACE_ASC",
               "counter1": "CUI",
               "counter2": "SDB"
             },
             {
-              "type": "F2 MUR ACS",
+              "type": "F2_MUR_ACS",
               "counter2": "CUI",
-              "counter1": "PLA"
+              "counter1": "SDB"
             },
             {
-              "type": "F3 G ASC",
+              "type": "F3_G_ASC",
               "counter1": "CUI",
               "counter2": "WC"
             },
             {
-              "type": "F4 D ASC",
-              "counter1": "PLA",
+              "type": "F4_D_ASC",
+              "counter1": "CUI",
               "counter2": "WC"
             }
           ]
@@ -77,23 +77,23 @@
           "level": 3,
           "apartments": [
             {
-              "type": "F2 FACE ASC",
+              "type": "F2_FACE_ASC",
               "counter1": "CUI",
               "counter2": "SDB"
             },
             {
-              "type": "F2 MUR ACS",
+              "type": "F2_MUR_ACS",
               "counter2": "CUI",
-              "counter1": "PLA"
+              "counter1": "SDB"
             },
             {
-              "type": "F3 G ASC",
+              "type": "F3_G_ASC",
               "counter1": "CUI",
               "counter2": "WC"
             },
             {
-              "type": "F4 D ASC",
-              "counter1": "PLA",
+              "type": "F4_D_ASC",
+              "counter1": "CUI",
               "counter2": "WC"
             }
           ]
@@ -102,23 +102,23 @@
           "level": 4,
           "apartments": [
             {
-              "type": "F2 FACE ASC",
+              "type": "F2_FACE_ASC",
               "counter1": "CUI",
               "counter2": "SDB"
             },
             {
-              "type": "F2 MUR ACS",
+              "type": "F2_MUR_ACS",
               "counter2": "CUI",
-              "counter1": "PLA"
+              "counter1": "SDB"
             },
             {
-              "type": "F3 G ASC",
+              "type": "F3_G_ASC",
               "counter1": "CUI",
               "counter2": "WC"
             },
             {
-              "type": "F4 D ASC",
-              "counter1": "PLA",
+              "type": "F4_D_ASC",
+              "counter1": "SDB",
               "counter2": "WC"
             }
           ]
@@ -132,24 +132,24 @@
           "level": 0,
           "apartments": [
             {
-              "type": "2 face entree",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_MUR_AS",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2 fond",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_G_ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
             },
             {
-              "type": "2 face",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
             }
           ]
         },
@@ -157,24 +157,24 @@
           "level": 1,
           "apartments": [
             {
-              "type": "Studio",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F1_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2P",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "5",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F5_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         },
@@ -182,24 +182,24 @@
           "level": 2,
           "apartments": [
             {
-              "type": "Studio",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F1_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2P",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "5",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F5_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         },
@@ -207,24 +207,24 @@
           "level": 3,
           "apartments": [
             {
-              "type": "Studio",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F1_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2P",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "5",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F5_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         },
@@ -232,24 +232,24 @@
           "level": 4,
           "apartments": [
             {
-              "type": "Studio",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F1_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2P",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "5",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F5_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         }
@@ -262,24 +262,24 @@
           "level": 0,
           "apartments": [
             {
-              "type": "2 face entree",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2 fond",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2 face",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
             }
           ]
         },
@@ -287,24 +287,24 @@
           "level": 1,
           "apartments": [
             {
-              "type": "2 face asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2 cote asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
             },
             {
-              "type": "4",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F4_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         },
@@ -312,24 +312,24 @@
           "level": 2,
           "apartments": [
             {
-              "type": "2 face asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2 cote asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
             },
             {
-              "type": "4",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F4_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         },
@@ -337,24 +337,24 @@
           "level": 3,
           "apartments": [
             {
-              "type": "2 face asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2 cote asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
             },
             {
-              "type": "4",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F4_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         },
@@ -362,24 +362,24 @@
           "level": 4,
           "apartments": [
             {
-              "type": "2 face asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_FACE_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "2 cote asc",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F2_MUR_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             },
             {
-              "type": "3",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F3_D_ASC",
+              "counter1": "CUI",
+              "counter2": "WC"
             },
             {
-              "type": "4",
-              "counter1": "wc",
-              "counter2": "sdb"
+              "type": "F4_G_ASC",
+              "counter1": "CUI",
+              "counter2": "SDB"
             }
           ]
         }
