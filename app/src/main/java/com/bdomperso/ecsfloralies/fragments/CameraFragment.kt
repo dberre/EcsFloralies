@@ -85,6 +85,8 @@ typealias LumaListener = (luma: Double) -> Unit
  */
 class CameraFragment : Fragment() {
 
+    private lateinit var photoFile: File
+
     private var _fragmentCameraBinding: FragmentCameraBinding? = null
 
     private val fragmentCameraBinding get() = _fragmentCameraBinding!!
@@ -167,6 +169,11 @@ class CameraFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
+
+        if (arguments != null) {
+            photoFile = requireArguments().getSerializable("photoFile") as File
+        }
+
         _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
         return fragmentCameraBinding.root
     }
@@ -486,8 +493,8 @@ class CameraFragment : Fragment() {
             // Get a stable reference of the modifiable image capture use case
             imageCapture?.let { imageCapture ->
 
-                // Create output file to hold the image
-                val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
+//                // Create output file to hold the image
+//                val photoFile = createFile(outputDirectory, FILENAME, PHOTO_EXTENSION)
 
                 // Setup image capture metadata
                 val metadata = Metadata().apply {
