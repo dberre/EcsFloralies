@@ -12,6 +12,19 @@ import java.io.File
 
 // adb shell to browse the device files
 
+
+// various way to get a storage directory
+// - When requesting the directory to the Environment
+//   Environment.getExternalStorageDirectory() -> /storage/emulated/0
+//   Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) -> /storage/emulated/0/Pictures
+// - When requesting the directory to the Context
+//   getExternalFilesDir(Environment.DIRECTORY_PICTURES) -> /storage/emulated/0/Android/data/com.bdomperso.ecsfloralies/files/Pictures
+
+// Le chemin ou Depstech-view place les photos est vue par Android Details comme:
+// '/Espace de stockage interne/DCIM/DEPSTECH_View'
+// la vue physique dans le device manager Android Studio est:
+// '/sdcard/DCIM/DEPSTECH_View'
+
 @RequiresApi(Build.VERSION_CODES.Q)
 class FolderObserver(context: Context, pathToWatch: File) : FileObserver(pathToWatch, mask) {
 
