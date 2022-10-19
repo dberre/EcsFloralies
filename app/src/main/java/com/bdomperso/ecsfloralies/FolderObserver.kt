@@ -57,6 +57,8 @@ class FolderObserver(context: Context, pathToWatch: File) : FileObserver(pathToW
                 intent.putExtra("image_path", file.absolutePath)
                 context.startActivity(intent)
             })
+            // only one file is expected, so stop watching now
+            stopWatching()
         }
     }
 }
@@ -92,6 +94,8 @@ class FolderObserverLegacy(context: Context, pathToWatch: File) : FileObserver(p
                 intent.putExtra("image_path", file.absolutePath)
                 context.startActivity(intent)
             })
+            // only one file is expected, so stop watching now
+            stopWatching()
         }
     }
 }
