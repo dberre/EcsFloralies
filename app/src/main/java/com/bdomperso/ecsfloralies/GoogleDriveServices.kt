@@ -1,6 +1,7 @@
 package com.bdomperso.ecsfloralies
 
 import android.content.Context
+import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.api.client.extensions.android.http.AndroidHttp
@@ -16,17 +17,21 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.util.*
+import kotlin.NoSuchElementException
 
 class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) {
-        var httpTransport: HttpTransport = NetHttpTransport()
-        var jsonFactory: JsonFactory = JacksonFactory()
-        private var service: Drive? = null
 
-        /**
+    private var service: Drive? = null
+
+    private val TAG = "SaveCaptureActivity"
+
+    /**
          * Initialize initials attributes.
          *
          * @param .
@@ -64,11 +69,14 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
 
 
         @Throws(IOException::class)
-        fun uploadImageFile(filePath: String, title: String) {
+        fun uploadImageFile(filePath: String, title: String, parent: String) {
+
             CoroutineScope(Dispatchers.IO).launch {
+                val parentFolder = searchFolders(parent).first()
+
                 val body = com.google.api.services.drive.model.File()
                 body.name = title
-                body.parents = arrayListOf("1qbW8gsaOTZ3CgWFCTEeawOXijDRjfYv5")
+                body.parents = arrayListOf(parentFolder.id.toString())
                 body.description = "ECS 2022 image"
                 body.mimeType = "image/jpg"
                 val fileContent = File(filePath)
@@ -78,6 +86,10 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
                     println("remote file name: ${file.id}")
                 } catch (ex: ApiException) {
                     println("uploadImageFile: ApiException ${ex.message}")
+                } catch (ex: NoSuchElementException) {
+                    println("UploadImageFile: remote folder $parent ${ex.message}")
+                } catch (ex: IOException) {
+                    println("UploadImageFile: I/O error: ${ex.message}")
                 } catch (ex: Exception) {
                     println("uploadImageFile: Exception ${ex.message}")
                 }
@@ -140,4 +152,69 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
             }
             return result
         }
+
+    @Throws(IOException::class)
+    suspend fun searchFolders(name: String): List<com.google.api.services.drive.model.File> {
+
+        val value = CoroutineScope(Dispatchers.IO).async {
+            val result = ArrayList<com.google.api.services.drive.model.File>()
+            var request = service!!.files().list()
+            do {
+                try {
+                    val query = "mimeType = 'application/vnd.google-apps.folder' and name = '$name'"
+                    println(query)
+                    val files = request
+                        .setQ(query)
+                        .execute()
+                    files.files.forEach { println(it.id) }
+                    result.addAll(files.files)
+                    request.pageToken = files.nextPageToken
+                } catch (e: IOException) {
+                    println("IOException ${e.message}")
+                    request.pageToken = null
+                }
+            } while (request.pageToken != null && request.pageToken.isNotEmpty())
+            result
+        }
+        return value.await()
+    }
+
+    @Throws(IOException::class)
+    suspend fun searchImage(name: String): List<com.google.api.services.drive.model.File> {
+
+        val value = CoroutineScope(Dispatchers.IO).async {
+            val result = ArrayList<com.google.api.services.drive.model.File>()
+            var request = service!!.files().list()
+            do {
+                try {
+                    val query = "mimeType contains 'image/' and name = '$name'"
+                    val files = request
+                        .setQ(query)
+                        .execute()
+                    files.files.forEach { println(it.id) }
+                    result.addAll(files.files)
+                    request.pageToken = files.nextPageToken
+                } catch (e: IOException) {
+                    println("IOException ${e.message}")
+                    request.pageToken = null
+                }
+            } while (request.pageToken != null && request.pageToken.isNotEmpty())
+            result
+        }
+        return value.await()
+    }
+
+    // TODO specify the folder for securing the delete ?.
+    @Throws(IOException::class)
+    suspend fun deleteImage(fileName: String) {
+        val value = CoroutineScope(Dispatchers.IO).async {
+            val files = searchImage(fileName)
+            files.forEach {
+                service!!.files().delete(it.id).execute()
+                Log.i(TAG, "image ${it.name} id:${it.id} deleted")
+            }
+            0
+        }
+        value.await()
+    }
 }
