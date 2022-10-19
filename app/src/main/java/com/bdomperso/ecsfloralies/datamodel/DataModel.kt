@@ -1,5 +1,6 @@
 package com.bdomperso.ecsfloralies.datamodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -15,6 +16,7 @@ class DataModel(jsonTxt: String): ViewModel() {
     private val _filteredApartments: MutableLiveData<List<Apartment>> = MutableLiveData()
     private val _filteredApartment: MutableLiveData<Apartment> = MutableLiveData()
     private val _filename = MutableLiveData<String>()
+    private val _imageUri = MutableLiveData<Uri>()
 
     init {
         val jsonData = Json.decodeFromString<Residence>(jsonTxt)
@@ -38,6 +40,11 @@ class DataModel(jsonTxt: String): ViewModel() {
     }
 
     val filename: LiveData<String> = _filename
+
+    val imageUri: LiveData<Uri> = _imageUri
+
+    var image: String = ""
+        set(value) { _imageUri.value = Uri.parse(value) }
 
     var selectedBuilding: Any = "A"
         set(value) {
