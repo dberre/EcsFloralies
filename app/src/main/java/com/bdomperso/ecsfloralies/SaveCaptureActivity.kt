@@ -1,32 +1,29 @@
 package com.bdomperso.ecsfloralies
 
 import android.content.Intent
-import android.database.Cursor
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.bdomperso.ecsfloralies.databinding.ActivitySaveCaptureBinding
 import com.bdomperso.ecsfloralies.datamodel.DataModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
-import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 
+
 class SaveCaptureActivity : AppCompatActivity(), OverwriteFileDialogFragment.NoticeDialogListener {
 
-    private val RESULT_GALLERY = 9002
     private val TAG = "SaveCaptureActivity"
 
     private var imageFile: File? = null
@@ -43,11 +40,14 @@ class SaveCaptureActivity : AppCompatActivity(), OverwriteFileDialogFragment.Not
         try {
             viewModel = DataModel(jsonTxt)
             val binding =
-                DataBindingUtil.setContentView<ActivitySaveCaptureBinding>(this, R.layout.activity_save_capture)
+                DataBindingUtil.setContentView<ActivitySaveCaptureBinding>(
+                    this,
+                    R.layout.activity_save_capture
+                )
             binding.lifecycleOwner = this
             binding.viewmodel = viewModel
         } catch (ex: Exception) {
-            println("onCreate: ${ex.message}")
+            Log.e(TAG, "onCreate: ${ex.message}")
         }
 
         findViewById<Button>(R.id.saveImageButton).setOnClickListener {
@@ -55,7 +55,10 @@ class SaveCaptureActivity : AppCompatActivity(), OverwriteFileDialogFragment.Not
         }
 
         val argument = intent.extras?.getString("image_path")
-        imageFile = if (argument != null) File(argument) else null
+        if (argument != null) {
+            imageFile = File(argument)
+            viewModel.image = argument
+        }
 
         Log.i("ExternalStorage", "onCreate, arg=${imageFile ?: "none"}")
     }
@@ -79,23 +82,33 @@ class SaveCaptureActivity : AppCompatActivity(), OverwriteFileDialogFragment.Not
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment, file: File) {
-        println("positive response")
-        try {
-            file.delete()
-            saveImage()
-        } catch (ex: IOException) {
-            Log.e("ExternalStorage", "delete file failed", ex)
+        CoroutineScope(Dispatchers.IO).launch() {
+            try {
+                // delete the image on the telephone and on Google Drive
+
+                file.delete()
+                gd.deleteImage(file.name)
+
+                withContext(Dispatchers.Main) {
+                    saveImage()
+                }
+
+            } catch (ex: IOException) {
+                Log.e(TAG, "delete image ${file.name} failed", ex)
+            } catch (ex: SecurityException) {
+                Log.e(TAG, "delete image ${file.name} not allowed", ex)
+            }
         }
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment, file: File) {
-        println("negative response")
+        // nothing to do here for now
     }
 
     private fun saveImage() {
 
         if (!imageFile!!.exists()) {
-            Log.e(TAG,"${imageFile!!.absolutePath} file doesn't exist")
+            Log.e(TAG, "${imageFile!!.absolutePath} file doesn't exist")
             Toast.makeText(this, "Photo ${imageFile!!.absolutePath} non trouvée", Toast.LENGTH_LONG)
             return
         }
@@ -112,10 +125,15 @@ class SaveCaptureActivity : AppCompatActivity(), OverwriteFileDialogFragment.Not
         try {
             imageFile!!.renameTo(destFile)
 
-            gd.uploadImageFile(destFile.absolutePath, destFilename)
+            gd.uploadImageFile(destFile.absolutePath, destFilename, "ECS_2022")
 
-            Toast.makeText(this, "$destFilename créée dans Photos", Toast.LENGTH_LONG)
+            Toast.makeText(
+                this,
+                "$destFilename créée dans Photos et sur Google Drive",
+                Toast.LENGTH_LONG
+            ).show()
 
+            this.startActivity(Intent(this, MainActivity::class.java))
             return
         } catch (ex: ApiException) {
             Log.e(TAG, "saveImage: Api error: ${ex.message}")
@@ -124,5 +142,7 @@ class SaveCaptureActivity : AppCompatActivity(), OverwriteFileDialogFragment.Not
         } catch (ex: Exception) {
             Log.e(TAG, "saveImage: general error: ${ex.message}")
         }
+
+        // TODO error popup here. Distinguish rename which must not fail and upload which can fail
     }
 }
