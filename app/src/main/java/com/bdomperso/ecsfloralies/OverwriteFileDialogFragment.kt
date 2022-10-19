@@ -24,7 +24,7 @@ class OverwriteFileDialogFragment(file: File) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(R.string.file_exsists_alert)
+            builder.setMessage(getString(R.string.file_exsists_alert, file.name))
                 .setPositiveButton(R.string.yes) { _, _ ->
                     listener.onDialogPositiveClick(this, file)
                 }
