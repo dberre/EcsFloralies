@@ -14,116 +14,172 @@
         android:layout_height="match_parent"
         tools:context=".SaveCaptureActivity">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="120dp"
+                <ImageView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Batiment" />
+                    app:srcUri="@{viewmodel.imageUri}"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"/>
 
-                <Spinner
-                    android:id="@+id/buildingsList"
-                    android:layout_width="150dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@{viewmodel.buildings}"
-                    app:onItemSelected="@{(newValue) -> viewmodel.setSelectedBuilding(newValue)}" />
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Batiment"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/buildingsList"
+                        android:layout_width="150dp"
+                        android:layout_height="?attr/dropdownListPreferredItemHeight"
+                        app:entries="@{viewmodel.buildings}"
+                        app:onItemSelected="@{(newValue) -> viewmodel.setSelectedBuilding(newValue)}"
+                        android:background="@drawable/spinner_bg"
+                        android:dropDownWidth="200dp"
+                        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                        android:paddingRight="14dp"
+                        android:popupBackground="@android:color/white"
+                        android:popupElevation="3dp"
+                        android:stateListAnimator="@drawable/spinner_sla"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Etage"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/stagesList"
+                        android:layout_width="150dp"
+                        android:layout_height="?attr/dropdownListPreferredItemHeight"
+                        app:entries="@{viewmodel.filteredStages}"
+                        app:onItemSelected="@{(newValue) -> viewmodel.setSelectedStage(newValue)}"
+                        android:background="@drawable/spinner_bg"
+                        android:dropDownWidth="200dp"
+                        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                        android:paddingRight="14dp"
+                        android:popupBackground="@android:color/white"
+                        android:popupElevation="3dp"
+                        android:stateListAnimator="@drawable/spinner_sla"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Appartement"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/apartmentsList"
+                        android:layout_width="150dp"
+                        android:layout_height="?attr/dropdownListPreferredItemHeight"
+                        app:entries="@{viewmodel.filteredApartments}"
+                        app:onItemSelected="@{(newValue) -> viewmodel.setSelectedApartment(newValue)}"
+                        android:background="@drawable/spinner_bg"
+                        android:dropDownWidth="200dp"
+                        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                        android:paddingRight="14dp"
+                        android:popupBackground="@android:color/white"
+                        android:popupElevation="3dp"
+                        android:stateListAnimator="@drawable/spinner_sla"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Compteur"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:layout_width="150dp"
+                        android:layout_height="?attr/dropdownListPreferredItemHeight"
+                        app:entries="@{viewmodel.filteredCounters}"
+                        app:onItemSelected="@{(newValue) -> viewmodel.setSelectedCounter(newValue)}"
+                        android:background="@drawable/spinner_bg"
+                        android:dropDownWidth="200dp"
+                        android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
+                        android:paddingRight="14dp"
+                        android:popupBackground="@android:color/white"
+                        android:popupElevation="3dp"
+                        android:stateListAnimator="@drawable/spinner_sla"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Photo"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@{viewmodel.filename}"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/saveImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Sauver la photo"
+                    android:padding="5dp"/>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:text="Etage"/>
-
-                <Spinner
-                    android:id="@+id/stagesList"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    app:entries="@{viewmodel.filteredStages}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:onItemSelected="@{(newValue) -> viewmodel.setSelectedStage(newValue)}" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:text="Appartement"/>
-
-                <Spinner
-                    android:id="@+id/apartmentsList"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    app:entries="@{viewmodel.filteredApartments}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:onItemSelected="@{(newValue) -> viewmodel.setSelectedApartment(newValue)}" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:text="Compteur"/>
-
-                <Spinner
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    app:entries="@{viewmodel.filteredCounters}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:onItemSelected="@{(newValue) -> viewmodel.setSelectedCounter(newValue)}" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="@{viewmodel.filename}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:padding="5dp"/>
-
-            <Button
-                android:id="@+id/saveImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Sauver la photo" />
-
-        </LinearLayout>
-
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
