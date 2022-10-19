@@ -7,18 +7,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.FileObserver
-import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -28,9 +26,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
 import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
 const val KEY_EVENT_ACTION = "key_event_action"
 const val KEY_EVENT_EXTRA = "key_event_extra"
@@ -44,8 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private val PERMISSIONS_REQUEST_CODE = 9000
     private val RC_SIGN_IN = 9001
-    private val REQUEST_IMAGE_CAPTURE = 9002
-    private val TAG = "ecsfloralies.mainactivity"
+    private val TAG = "MainActivity"
 
     private lateinit var signInButton: Button
     private lateinit var signOutButton: Button
@@ -100,20 +94,20 @@ class MainActivity : AppCompatActivity() {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        val pathToWatch = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        // This is the path where the app Depstech is saving the image (with Android 7, and for later ? TODO)
+        val pathToWatch = File("/sdcard/DCIM/DEPSTECH_View")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            observer = FolderObserver(this, pathToWatch)
+        observer = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            FolderObserver(this, pathToWatch)
             // TODO stop watching ?
         } else {
-            observer = FolderObserverLegacy(this, pathToWatch)
+            FolderObserverLegacy(this, pathToWatch)
         }
+        Log.i(TAG, "End of onCreate")
     }
 
     override fun onStart() {
         super.onStart()
-
-        observer!!.stopWatching()
 
         // Check if the user is already signed in and all required scopes are granted
         val account = GoogleSignIn.getLastSignedInAccount(this)
@@ -136,9 +130,6 @@ class MainActivity : AppCompatActivity() {
             RC_SIGN_IN -> {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 handleSignInResult(task)
-            }
-            REQUEST_IMAGE_CAPTURE -> {
-                println("REQUEST_IMAGE_CAPTURE")
             }
         }
     }
