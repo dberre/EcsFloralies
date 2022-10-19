@@ -1,17 +1,25 @@
 package com.bdomperso.ecsfloralies
 
-import android.R
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 @BindingAdapter("entries")
 fun Spinner.setSpinnerEntries(entries: List<Any>?) {
     if (entries != null) {
-        val arrayAdapter = ArrayAdapter(context, R.layout.simple_spinner_item, entries)
-        arrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        val arrayAdapter = ArrayAdapter(context, R.layout.custom_spinner, entries)
+        arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown)
         adapter = arrayAdapter
     }
 }
@@ -29,6 +37,18 @@ fun Spinner.setItemSelectedListener(listener: ItemSelectedListener?) {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }
+}
+
+@BindingAdapter("srcUri")
+fun ImageView.setSrcURI(uri: Uri) {
+    CoroutineScope(Dispatchers.IO).launch {
+        BitmapFactory.decodeFile(uri.path).also { bitmap ->
+            Log.e("BindingAdatper", "setSrcURI bmpsize: ${bitmap.width} ${bitmap.height}")
+            withContext(Dispatchers.Main) {
+                setImageBitmap(bitmap)
+            }
         }
     }
 }
