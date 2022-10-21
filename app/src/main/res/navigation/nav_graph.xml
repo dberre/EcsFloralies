@@ -27,6 +27,9 @@
         <argument
             android:name="photoPath"
             app:argType="string" />
+        <action
+            android:id="@+id/action_saveCaptureFragment_to_overwriteFileDialogFragment"
+            app:destination="@id/overwriteFileDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
@@ -40,5 +43,16 @@
             app:argType="java.io.File" />
     </fragment>
     <action android:id="@+id/action_global_saveCaptureFragment" app:destination="@id/saveCaptureFragment" />
+    <dialog
+        android:id="@+id/overwriteFileDialogFragment"
+        android:name="com.bdomperso.ecsfloralies.fragments.OverwriteFileDialogFragment"
+        android:label="OverwriteFileDialogFragment" >
+        <action
+            android:id="@+id/action_overwriteFileDialogFragment_to_saveCaptureFragment"
+            app:destination="@id/saveCaptureFragment" />
+        <argument
+            android:name="file"
+            app:argType="java.io.File" />
+    </dialog>
 
 </navigation>

@@ -160,8 +160,8 @@ class EntryFragment : Fragment() {
     }
 
     private fun launchEndoscopeCapture() {
-//        val packageName = "com.ipotensic.depstech"
-        val packageName = "org.o7planning.simulatedepstech"
+        val packageName = "com.ipotensic.depstech"
+//        val packageName = "org.o7planning.simulatedepstech"
 
         try {
             val pm = requireContext().packageManager

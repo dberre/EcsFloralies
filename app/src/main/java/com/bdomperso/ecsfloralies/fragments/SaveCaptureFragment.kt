@@ -13,7 +13,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bdomperso.ecsfloralies.GoogleDriveServices
-import com.bdomperso.ecsfloralies.OverwriteFileDialogFragment
 import com.bdomperso.ecsfloralies.R
 import com.bdomperso.ecsfloralies.databinding.FragmentSaveCaptureBinding
 import com.bdomperso.ecsfloralies.datamodel.DataModel
@@ -139,8 +138,8 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         val destFile = File(imageFile!!.parent).resolve(destFilename)
 
         if (destFile.exists()) {
-            val dialog = OverwriteFileDialogFragment(destFile)
-            dialog.show(childFragmentManager, "OverwriteFileDialogFragment")
+            val action = SaveCaptureFragmentDirections.actionSaveCaptureFragmentToOverwriteFileDialogFragment(destFile)
+            findNavController().navigate(action)
             return
         }
 

@@ -38,7 +38,7 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.camera.core.*
-import androidx.camera.core.ImageCapture.Metadata
+import androidx.camera.core.ImageCapture.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
@@ -85,6 +85,7 @@ class CameraFragment : Fragment() {
 
     private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+    private var flashMode: Int = FLASH_MODE_AUTO
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
     private var imageAnalyzer: ImageAnalysis? = null
@@ -262,6 +263,7 @@ class CameraFragment : Fragment() {
             // Set initial target rotation, we will have to call this again if rotation changes
             // during the lifecycle of this use case
             .setTargetRotation(rotation)
+            .setFlashMode(flashMode)
             .build()
 
         // ImageAnalysis
@@ -516,6 +518,14 @@ class CameraFragment : Fragment() {
                     }, ANIMATION_SLOW_MILLIS)
                 }
             }
+        }
+
+        cameraUiContainerBinding?.flashModeButton?.setOnClickListener {
+            when (flashMode) {
+                FLASH_MODE_AUTO -> flashMode = FLASH_MODE_OFF
+                else -> flashMode == FLASH_MODE_AUTO
+            }
+            bindCameraUseCases()
         }
 
         cameraUiContainerBinding?.photoViewButton?.setOnClickListener {

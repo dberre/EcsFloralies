@@ -1,15 +1,16 @@
-package com.bdomperso.ecsfloralies
+package com.bdomperso.ecsfloralies.fragments
 
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.bdomperso.ecsfloralies.R
 import java.io.File
 
-class OverwriteFileDialogFragment(file: File) : DialogFragment() {
+class OverwriteFileDialogFragment: DialogFragment() {
 
-    private val file: File
+    private lateinit var file: File
     private lateinit var listener: NoticeDialogListener
 
     interface NoticeDialogListener {
@@ -17,8 +18,12 @@ class OverwriteFileDialogFragment(file: File) : DialogFragment() {
         fun onDialogNegativeClick(dialog: DialogFragment, file: File)
     }
 
-    init {
-        this.file = file
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (arguments != null) {
+            file = requireArguments().getSerializable("file") as File
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
