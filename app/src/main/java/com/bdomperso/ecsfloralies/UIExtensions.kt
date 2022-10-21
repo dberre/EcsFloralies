@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.FileNotFoundException
 
 
 @BindingAdapter("entries")
@@ -26,10 +27,10 @@ fun Spinner.setSpinnerEntries(entries: List<Any>?) {
 
 @BindingAdapter("onItemSelected")
 fun Spinner.setItemSelectedListener(listener: ItemSelectedListener?) {
-    if (listener == null) {
-        onItemSelectedListener = null
+    onItemSelectedListener = if (listener == null) {
+        null
     } else {
-        onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (tag != position) {
                     listener.onItemSelected(parent.getItemAtPosition(position))
@@ -43,11 +44,27 @@ fun Spinner.setItemSelectedListener(listener: ItemSelectedListener?) {
 
 @BindingAdapter("srcUri")
 fun ImageView.setSrcURI(uri: Uri) {
+    // TODO more smart structure ?
     CoroutineScope(Dispatchers.IO).launch {
-        BitmapFactory.decodeFile(uri.path).also { bitmap ->
-            Log.e("BindingAdatper", "setSrcURI bmpsize: ${bitmap.width} ${bitmap.height}")
-            withContext(Dispatchers.Main) {
-                setImageBitmap(bitmap)
+        try {
+            BitmapFactory.decodeFile(uri.path).also { bitmap ->
+                Log.e("BindingAdapter", "setSrcURI ${uri.path} size: ${bitmap.width} ${bitmap.height}")
+                withContext(Dispatchers.Main) {
+                    setImageBitmap(bitmap)
+                }
+            }
+        } catch (ex: Exception) {
+            when(ex) {
+                is FileNotFoundException, is NullPointerException -> {
+                    BitmapFactory.decodeResource(resources, R.drawable.no_image_available)
+                    .also { bitmap ->
+                        Log.w("BindingAdapter",
+                            "setSrcURI default image size: ${bitmap.width} ${bitmap.height}")
+                        withContext(Dispatchers.Main) {
+                            setImageBitmap(bitmap)
+                        }
+                    }
+                } else -> throw ex
             }
         }
     }

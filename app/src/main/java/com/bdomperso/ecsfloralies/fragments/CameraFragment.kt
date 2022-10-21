@@ -44,6 +44,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.fragment.findNavController
 import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowMetricsCalculator
 import com.bdomperso.ecsfloralies.ANIMATION_FAST_MILLIS
@@ -515,6 +516,11 @@ class CameraFragment : Fragment() {
                     }, ANIMATION_SLOW_MILLIS)
                 }
             }
+        }
+
+        cameraUiContainerBinding?.photoViewButton?.setOnClickListener {
+            val action = CameraFragmentDirections.actionCameraFragmentToSaveCaptureFragment(photoFile.absolutePath)
+            this.findNavController().navigate(action)
         }
     }
 

@@ -53,7 +53,7 @@ class FolderObserver(context: Context, pathToWatch: File) : FileObserver(pathToW
             Log.i("TAG", "new file detected: ${file.absolutePath}")
 
             mainThreadHandler.post(Runnable() {
-                val intent = Intent(context, SaveCaptureActivity::class.java)
+                val intent = Intent(context, MainActivity::class.java)
                 intent.putExtra("image_path", file.absolutePath)
                 context.startActivity(intent)
             })
@@ -90,7 +90,7 @@ class FolderObserverLegacy(context: Context, pathToWatch: File) : FileObserver(p
             Log.i("TAG", "new file detected: ${file.absolutePath}")
 
             mainThreadHandler.post(Runnable() {
-                val intent = Intent(context, SaveCaptureActivity::class.java)
+                val intent = Intent(context, MainActivity::class.java)
                 intent.putExtra("image_path", file.absolutePath)
                 context.startActivity(intent)
             })

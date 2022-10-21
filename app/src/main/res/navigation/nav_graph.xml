@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/entryFragment">
+
+    <fragment
+        android:id="@+id/entryFragment"
+        android:name="com.bdomperso.ecsfloralies.fragments.EntryFragment"
+        android:label="fragment_entry"
+        tools:layout="@layout/fragment_entry" >
+        <action
+            android:id="@+id/action_entryFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveCaptureFragment"
+        android:name="com.bdomperso.ecsfloralies.fragments.SaveCaptureFragment"
+        android:label="fragment_save_capture"
+        tools:layout="@layout/fragment_save_capture" >
+        <action
+            android:id="@+id/action_saveCaptureFragment_to_entryFragment"
+            app:destination="@id/entryFragment"
+            app:popUpTo="@id/entryFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="photoPath"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.bdomperso.ecsfloralies.fragments.CameraFragment"
+        android:label="CameraFragment" >
+        <action
+            android:id="@+id/action_cameraFragment_to_saveCaptureFragment"
+            app:destination="@id/saveCaptureFragment" />
+        <argument
+            android:name="photoFile"
+            app:argType="java.io.File" />
+    </fragment>
+    <action android:id="@+id/action_global_saveCaptureFragment" app:destination="@id/saveCaptureFragment" />
+
+</navigation>
