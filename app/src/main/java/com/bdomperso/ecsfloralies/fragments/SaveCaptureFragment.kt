@@ -57,6 +57,8 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i(TAG, "onCreateView")
+
         val jsonTxt =
             resources.openRawResource(R.raw.residence).bufferedReader().use { it.readText() }
         try {

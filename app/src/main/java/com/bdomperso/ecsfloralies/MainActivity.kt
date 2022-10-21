@@ -3,9 +3,7 @@ package com.bdomperso.ecsfloralies
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.navigation.findNavController
-import com.bdomperso.ecsfloralies.fragments.OverwriteFileDialogFragment
 import java.io.File
 
 const val KEY_EVENT_ACTION = "key_event_action"
@@ -16,7 +14,7 @@ const val ANIMATION_FAST_MILLIS = 50L
 const val ANIMATION_SLOW_MILLIS = 100L
 
 
-class MainActivity : AppCompatActivity(), OverwriteFileDialogFragment.NoticeDialogListener {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         /** Use external media if it is available, our app's file directory otherwise */
@@ -43,13 +41,5 @@ class MainActivity : AppCompatActivity(), OverwriteFileDialogFragment.NoticeDial
             args.putString("photoPath", argument)
             findNavController(R.id.fragmentContainerView).navigate(R.id.action_global_saveCaptureFragment, args)
         }
-    }
-
-    override fun onDialogPositiveClick(dialog: DialogFragment, file: File) {
-        println("mainactivity")
-    }
-
-    override fun onDialogNegativeClick(dialog: DialogFragment, file: File) {
-        println("mainactivity")
     }
 }

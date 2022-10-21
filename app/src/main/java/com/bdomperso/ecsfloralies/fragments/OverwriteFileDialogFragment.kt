@@ -43,9 +43,11 @@ class OverwriteFileDialogFragment: DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = context as NoticeDialogListener
+            // This dialog must be called from SaveCaptureFragment which remains the current nav host
+            listener = parentFragmentManager.findFragmentById(R.id.fragmentContainerView) as NoticeDialogListener
+
         } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement NoticeDialogListener")
+            throw ClassCastException("The  must implement NoticeDialogListener")
         }
     }
 }
