@@ -6,10 +6,7 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.*
 import androidx.databinding.BindingAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,4 +73,18 @@ fun ImageView.setSrcURI(uri: Uri) {
 
 interface ItemSelectedListener {
     fun onItemSelected(item: Any)
+}
+
+/**
+ * Simulate a button click, including a small delay while it is being pressed to trigger the
+ * appropriate animations.
+ */
+fun ImageButton.simulateClick(delay: Long = ANIMATION_FAST_MILLIS) {
+    performClick()
+    isPressed = true
+    invalidate()
+    postDelayed({
+        invalidate()
+        isPressed = false
+    }, delay)
 }
