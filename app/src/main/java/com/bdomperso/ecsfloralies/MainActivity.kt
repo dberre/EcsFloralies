@@ -1,8 +1,11 @@
 package com.bdomperso.ecsfloralies
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import java.io.File
 
@@ -40,6 +43,18 @@ class MainActivity : AppCompatActivity() {
             var args = Bundle()
             args.putString("photoPath", argument)
             findNavController(R.id.fragmentContainerView).navigate(R.id.action_global_saveCaptureFragment, args)
+        }
+    }
+
+    /** When key down event is triggered, relay it via local broadcast so fragments can handle it */
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                val intent = Intent(KEY_EVENT_ACTION).apply { putExtra(KEY_EVENT_EXTRA, keyCode) }
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+                true
+            }
+            else -> super.onKeyDown(keyCode, event)
         }
     }
 }
