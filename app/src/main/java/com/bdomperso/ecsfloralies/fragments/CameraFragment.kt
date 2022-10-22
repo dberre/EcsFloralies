@@ -47,10 +47,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowMetricsCalculator
-import com.bdomperso.ecsfloralies.ANIMATION_FAST_MILLIS
-import com.bdomperso.ecsfloralies.ANIMATION_SLOW_MILLIS
-import com.bdomperso.ecsfloralies.KEY_EVENT_ACTION
-import com.bdomperso.ecsfloralies.KEY_EVENT_EXTRA
+import com.bdomperso.ecsfloralies.*
 import com.bdomperso.ecsfloralies.databinding.CameraUiContainerBinding
 import com.bdomperso.ecsfloralies.databinding.FragmentCameraBinding
 import java.io.File
@@ -106,7 +103,7 @@ class CameraFragment : Fragment() {
             when (intent.getIntExtra(KEY_EVENT_EXTRA, KeyEvent.KEYCODE_UNKNOWN)) {
                 // When the volume down button is pressed, simulate a shutter button click
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
-//                    cameraUiContainerBinding?.cameraCaptureButton?.simulateClick()  // TODO
+                    cameraUiContainerBinding?.cameraCaptureButton?.simulateClick()
                 }
             }
         }
@@ -491,6 +488,8 @@ class CameraFragment : Fragment() {
                             val savedUri = output.savedUri ?: Uri.fromFile(photoFile)
                             Log.d(TAG, "Photo capture succeeded: $savedUri")
 
+                            cameraUiContainerBinding?.photoViewButton?.isClickable = true
+
                             // If the folder selected is an external media directory, this is
                             // unnecessary but otherwise other apps will not be able to access our
                             // images unless we scan them using [MediaScannerConnection]
@@ -523,7 +522,7 @@ class CameraFragment : Fragment() {
         cameraUiContainerBinding?.flashModeButton?.setOnClickListener {
             when (flashMode) {
                 FLASH_MODE_AUTO -> flashMode = FLASH_MODE_OFF
-                else -> flashMode == FLASH_MODE_AUTO
+                else -> flashMode = FLASH_MODE_AUTO
             }
             bindCameraUseCases()
         }
