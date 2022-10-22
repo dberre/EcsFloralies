@@ -1,6 +1,8 @@
 package com.bdomperso.ecsfloralies
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -50,7 +52,9 @@ fun ImageView.setSrcURI(uri: Uri) {
             BitmapFactory.decodeFile(uri.path).also { bitmap ->
                 Log.e("BindingAdapter", "setSrcURI ${uri.path} size: ${bitmap.width} ${bitmap.height}")
                 withContext(Dispatchers.Main) {
-                    setImageBitmap(bitmap)
+                    var matrix = Matrix()
+                    matrix.postRotate(if (bitmap.height > bitmap.width)  90f else 0f)
+                    setImageBitmap(Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true))
                 }
             }
         } catch (ex: Exception) {
