@@ -38,7 +38,10 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
 
     private lateinit var gd: GoogleDriveServices
 
-    private lateinit var viewModel: DataModel
+    // This property is only valid between onCreateView and onDestroyView.
+    private var _binding: FragmentSaveCaptureBinding? = null
+
+    private var _viewModel: DataModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,9 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             null
         }
 
+        val jsonTxt = resources.openRawResource(R.raw.residence).bufferedReader().use { it.readText() }
+        _viewModel = DataModel(jsonTxt)
+
         Log.i(TAG, "onCreate, arg=${imageFile ?: "none"}")
     }
 
@@ -59,15 +65,9 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
     ): View? {
         Log.i(TAG, "onCreateView")
 
-        val jsonTxt =
-            resources.openRawResource(R.raw.residence).bufferedReader().use { it.readText() }
         try {
-            viewModel = DataModel(jsonTxt)
-            val binding =
-                FragmentSaveCaptureBinding.inflate(inflater,container, false)
-            binding.viewmodel = viewModel
-            binding.lifecycleOwner = this
-            return binding.root
+            _binding = FragmentSaveCaptureBinding.inflate(inflater, container, false)
+            return _binding!!.root
         } catch (ex: Exception) {
             Log.e(TAG, "onCreateView: ${ex.message}")
         }
@@ -76,14 +76,32 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i(TAG, "onViewCreated")
+
+        _binding?.apply {
+            viewmodel = _viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
 
         view.findViewById<Button>(R.id.saveImageButton).setOnClickListener {
             saveImage()
         }
 
         if (imageFile?.absolutePath != null) {
-            viewModel.image = imageFile?.absolutePath!! // TODO
+            _viewModel!!.image = imageFile?.absolutePath!! // TODO
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.i(TAG, "onDestroyView")
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy")
+        _viewModel = null
     }
 
     override fun onStart() {
@@ -97,10 +115,10 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             )
         ) {
             gd = GoogleDriveServices(requireContext(), account)
-            Log.i(TAG, "logged in")
+            Log.i(TAG, "OnStart: logged in")
         } else {
             // TODO disable GUI
-            Log.i(TAG, "logged out")
+            Log.i(TAG, "OnStart: logged out")
         }
     }
 
@@ -136,7 +154,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             return
         }
 
-        val destFilename = viewModel.filename.value ?: "BATX_ETX_FX_XX.jpg"
+        val destFilename = _viewModel!!.filename.value ?: "BATX_ETX_FX_XX.jpg"
         val destFile = File(imageFile!!.parent).resolve(destFilename)
 
         if (destFile.exists()) {
