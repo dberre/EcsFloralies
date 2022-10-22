@@ -1,6 +1,7 @@
 package com.bdomperso.ecsfloralies.datamodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -9,6 +10,8 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class DataModel(jsonTxt: String): ViewModel() {
+
+    private val TAG = "DataModel"
 
     private val _buildings: MutableLiveData<List<Building>>
 
@@ -49,27 +52,25 @@ class DataModel(jsonTxt: String): ViewModel() {
     var selectedBuilding: Any = "A"
         set(value) {
             field = value
-            println("building: $value")
+            Log.i(TAG, "selectedBuilding: $value")
             val filtered = _buildings.value?.first { it.name == selectedBuilding }?.stages
-            _filteredStages.value = filtered
+            _filteredStages.value = filtered!!
             _filename.value = composeFilename()
-            filtered?.forEach { println("building: ${it.level}") }
         }
 
     var selectedStage: Any = 0
         set(value) {
             field = value
-            println("stage: $value")
-            val filtered = _filteredStages.value?.first { it.level == selectedStage}?.apartments
-            _filteredApartments.value = filtered
+            Log.i(TAG, "selectedStage: $value")
+            val filtered = _filteredStages.value?.first { it.level == selectedStage }?.apartments
+            _filteredApartments.value = filtered!!
             _filename.value = composeFilename()
-            filtered?.forEach { println("apartment:${it.type}") }
         }
 
     var selectedApartment: Any = ""
         set(value) {
             field = value
-            println("apartment: $value")
+            Log.i(TAG, "selectedApartment: $value")
             _filteredApartment.value = _filteredApartments.value?.first { it.type == selectedApartment }
             _filename.value = composeFilename()
         }
@@ -77,8 +78,8 @@ class DataModel(jsonTxt: String): ViewModel() {
     var selectedCounter: Any = ""
         set(value) {
             field = value
+            Log.i(TAG, "selectedCounter: $value")
             _filename.value = composeFilename()
-            println("counter: $value")
         }
 
     private fun composeFilename(): String {
