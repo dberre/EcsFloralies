@@ -23,18 +23,18 @@
     android:layout_height="match_parent">
 
     <ImageButton
-        android:id="@id/flash_mode_button"
+        android:id="@+id/flash_mode_button"
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_medium"
         android:layout_marginEnd="@dimen/margin_xlarge"
         android:layout_marginBottom="@dimen/margin_small"
-        android:padding="@dimen/spacing_small"
+        android:padding="@dimen/spacing_medium"
         android:scaleType="fitXY"
-        android:background="@android:color/transparent"
+        android:background="@drawable/ic_outer_circle"
         app:srcCompat="@drawable/flash"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/gallery_button_alt" />
+        android:contentDescription="Flash mode button" />
 
     <ImageButton
         android:id="@+id/camera_capture_button"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@id/photo_view_button"
+        android:id="@+id/photo_view_button"
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_medium"
         android:layout_marginEnd="@dimen/margin_xlarge"
@@ -60,6 +60,6 @@
         app:srcCompat="@drawable/checkmark"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/switch_camera_button_alt" />
+        android:contentDescription="Save image button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
