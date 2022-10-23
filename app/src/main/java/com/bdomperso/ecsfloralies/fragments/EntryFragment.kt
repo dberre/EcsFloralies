@@ -189,6 +189,7 @@ class EntryFragment : Fragment() {
         } catch (e: ApiException) {
             // Signed out, show unauthenticated UI.
             Log.w(TAG, "handleSignInResult:error", e)
+            // TODO
         }
     }
 
