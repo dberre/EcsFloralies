@@ -136,7 +136,9 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
 
             } catch (ex: IOException) {
                 Log.e(TAG, "delete image ${file.name} failed", ex)
+                // TODO manage the fact that this will happen when the connection to drive is nok
             } catch (ex: SecurityException) {
+                // local rename on the device fails (reasons ?)
                 Log.e(TAG, "delete image ${file.name} not allowed", ex)
             }
         }
@@ -174,13 +176,15 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
                 Toast.LENGTH_LONG
             ).show()
 
+            // TODO si echec un autre essai ou abandon ?
+
             val action = SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment()
             findNavController().navigate(action)
             return
         } catch (ex: ApiException) {
             Log.e(TAG, "saveImage: Api error: ${ex.message}")
         } catch (ex: IOException) {
-            Log.e("ExternalStorage", "renamed failed", ex)
+            Log.e("saveImage", "renamed failed", ex)
         } catch (ex: Exception) {
             Log.e(TAG, "saveImage: general error: ${ex.message}")
         }
