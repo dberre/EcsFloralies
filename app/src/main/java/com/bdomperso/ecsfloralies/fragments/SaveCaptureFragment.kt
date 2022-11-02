@@ -167,29 +167,44 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
 
         try {
             imageFile!!.renameTo(destFile)
-
-            gd.uploadImageFile(destFile.absolutePath, destFilename, "ECS_2022")
-
-            Toast.makeText(
-                requireContext(),
-                "$destFilename créée dans Photos et sur Google Drive",
-                Toast.LENGTH_LONG
-            ).show()
-
-            // TODO si echec un autre essai ou abandon ?
-
-            val action = SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment()
-            findNavController().navigate(action)
-            return
-        } catch (ex: ApiException) {
-            Log.e(TAG, "saveImage: Api error: ${ex.message}")
-        } catch (ex: IOException) {
-            Log.e("saveImage", "renamed failed", ex)
-        } catch (ex: Exception) {
-            Log.e(TAG, "saveImage: general error: ${ex.message}")
+        } catch(ex: SecurityException) {
+            Log.e(TAG, "saveImage: rename failed: ${ex.message}")
         }
 
-        // TODO error popup here. Distinguish rename which must not fail and upload which can fail
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // TODO do not perform a preventive delete here ?
+                gd.uploadImageFile(destFile.absolutePath, destFilename, "ECS_2022")
+
+                withContext(Dispatchers.Main) {
+                    Log.i(TAG, "1")
+                    Toast.makeText(
+                        requireContext(),
+                        "Image $destFilename créée dans Photos et sur Google Drive",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    Log.i(TAG, "2")
+                    findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
+                    Log.i(TAG, "3")
+                }
+
+            } catch (ex: ApiException) {
+                Log.e(TAG, "saveImage: Api error: ${ex.message}")
+            } catch (ex: IOException) {
+                Log.e(TAG, "saveImage: IOException ${ex.message}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Image $destFilename créée dans Photos. Ecriture sur Google Drive différée",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
+                }
+                // TODO push to a job queue
+            } catch (ex: Exception) {
+                Log.e(TAG, "saveImage: general error: ${ex.message}")
+            }
+        }
     }
 
     private val defaultImageUri
