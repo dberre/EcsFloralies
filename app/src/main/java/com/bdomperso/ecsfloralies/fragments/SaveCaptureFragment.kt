@@ -12,13 +12,16 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.bdomperso.ecsfloralies.GoogleDriveServices
 import com.bdomperso.ecsfloralies.R
+import com.bdomperso.ecsfloralies.UploadWorker
 import com.bdomperso.ecsfloralies.databinding.FragmentSaveCaptureBinding
 import com.bdomperso.ecsfloralies.datamodel.DataModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.Scopes
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -167,44 +170,29 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
 
         try {
             imageFile!!.renameTo(destFile)
-        } catch(ex: SecurityException) {
+
+            enqueueUpload(destFile, destFilename)
+
+            Toast.makeText(
+                requireContext(),
+                "Image $destFilename créée dans Photos et sur Google Drive",
+                Toast.LENGTH_LONG
+            ).show()
+
+            findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
+
+        } catch (ex: SecurityException) {
             Log.e(TAG, "saveImage: rename failed: ${ex.message}")
         }
+    }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // TODO do not perform a preventive delete here ?
-                gd.uploadImageFile(destFile.absolutePath, destFilename, "ECS_2022")
-
-                withContext(Dispatchers.Main) {
-                    Log.i(TAG, "1")
-                    Toast.makeText(
-                        requireContext(),
-                        "Image $destFilename créée dans Photos et sur Google Drive",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Log.i(TAG, "2")
-                    findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
-                    Log.i(TAG, "3")
-                }
-
-            } catch (ex: ApiException) {
-                Log.e(TAG, "saveImage: Api error: ${ex.message}")
-            } catch (ex: IOException) {
-                Log.e(TAG, "saveImage: IOException ${ex.message}")
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Image $destFilename créée dans Photos. Ecriture sur Google Drive différée",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
-                }
-                // TODO push to a job queue
-            } catch (ex: Exception) {
-                Log.e(TAG, "saveImage: general error: ${ex.message}")
-            }
-        }
+    private fun enqueueUpload(srcFile: File, destFilename: String) {
+        val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
+            .setInputData(workDataOf(
+                Pair("SrcFilePath", srcFile.absolutePath),
+                Pair("DestFilename", destFilename)))
+            .build()
+        WorkManager.getInstance(requireContext()).enqueue(uploadWorkRequest)
     }
 
     private val defaultImageUri
