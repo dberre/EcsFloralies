@@ -47,7 +47,7 @@ fun ImageView.setSrcURI(uri: Uri) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
             BitmapFactory.decodeFile(uri.path).also { bitmap ->
-                Log.e("BindingAdapter", "setSrcURI ${uri.path} size: ${bitmap.width} ${bitmap.height}")
+                Log.i("BindingAdapter", "setSrcURI ${uri.path} size: ${bitmap.width} ${bitmap.height}")
                 withContext(Dispatchers.Main) {
                     var matrix = Matrix()
                     matrix.postRotate(if (bitmap.height > bitmap.width)  90f else 0f)
