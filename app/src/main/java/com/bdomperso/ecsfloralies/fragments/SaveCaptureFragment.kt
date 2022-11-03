@@ -23,12 +23,7 @@ import com.bdomperso.ecsfloralies.datamodel.DataModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.IOException
 
 /**
  * This fragment ensures the ....
@@ -87,7 +82,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         }
 
         view.findViewById<Button>(R.id.saveImageButton).setOnClickListener {
-            saveImage()
+            saveImage(false)
         }
 
         if (imageFile?.absolutePath != null) {
@@ -126,32 +121,14 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment, file: File) {
-        CoroutineScope(Dispatchers.IO).launch() {
-            try {
-                // delete the image on the telephone and on Google Drive
-
-                file.delete()
-                gd.deleteImage(file.name)
-
-                withContext(Dispatchers.Main) {
-                    saveImage()
-                }
-
-            } catch (ex: IOException) {
-                Log.e(TAG, "delete image ${file.name} failed", ex)
-                // TODO manage the fact that this will happen when the connection to drive is nok
-            } catch (ex: SecurityException) {
-                // local rename on the device fails (reasons ?)
-                Log.e(TAG, "delete image ${file.name} not allowed", ex)
-            }
-        }
+        saveImage(true)
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment, file: File) {
         // nothing to do here for now
     }
 
-    private fun saveImage() {
+    private fun saveImage(overwrite: Boolean) {
 
         if (!imageFile!!.exists()) {
             Log.e(TAG, "${imageFile!!.absolutePath} file doesn't exist")
@@ -159,19 +136,27 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             return
         }
 
+        // name of the file on Google Drive
         val destFilename = _viewModel!!.filename.value ?: "BATX_ETX_FX_XX.jpg"
+
+        // local File (on the device media storage)
         val destFile = File(imageFile!!.parent).resolve(destFilename)
 
-        if (destFile.exists()) {
-            val action = SaveCaptureFragmentDirections.actionSaveCaptureFragmentToOverwriteFileDialogFragment(destFile)
-            findNavController().navigate(action)
-            return
-        }
-
         try {
+            if (destFile.exists()) {
+                if (overwrite) {
+                    destFile.delete()
+                } else {
+                    findNavController().navigate(
+                        SaveCaptureFragmentDirections.actionSaveCaptureFragmentToOverwriteFileDialogFragment(
+                        destFile))
+                    return
+                }
+            }
+
             imageFile!!.renameTo(destFile)
 
-            enqueueUpload(destFile, destFilename)
+            sendToGoogleDrive(destFile, destFilename, overwrite)
 
             Toast.makeText(
                 requireContext(),
@@ -179,18 +164,24 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
                 Toast.LENGTH_LONG
             ).show()
 
-            findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
+            // TODO find the right way instead of this ugly workaround
+            try {
+                findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
+            } catch (ex: IllegalArgumentException) {
+                findNavController().navigate(OverwriteFileDialogFragmentDirections.actionOverwriteFileDialogFragmentToEntryFragment())
+            }
 
         } catch (ex: SecurityException) {
-            Log.e(TAG, "saveImage: rename failed: ${ex.message}")
+            Log.e(TAG, "saveImage: can't create local file ${destFile.name}: ${ex.message}")
         }
     }
 
-    private fun enqueueUpload(srcFile: File, destFilename: String) {
+    private fun sendToGoogleDrive(srcFile: File, destFilename: String, overwrite: Boolean) {
         val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
             .setInputData(workDataOf(
                 Pair("SrcFilePath", srcFile.absolutePath),
-                Pair("DestFilename", destFilename)))
+                Pair("DestFilename", destFilename),
+                Pair("Overwrite", overwrite)))
             .build()
         WorkManager.getInstance(requireContext()).enqueue(uploadWorkRequest)
     }
