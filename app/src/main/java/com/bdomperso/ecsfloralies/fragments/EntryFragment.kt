@@ -197,9 +197,13 @@ class EntryFragment : Fragment() {
         if (account != null) {
             signInButton.visibility = View.GONE
             signOutButton.visibility = View.VISIBLE
+            cameraButton.visibility = View.VISIBLE
+            endoscopeButton.visibility = View.VISIBLE
         } else {
             signInButton.visibility = View.VISIBLE
             signOutButton.visibility = View.GONE
+            cameraButton.visibility = View.GONE
+            endoscopeButton.visibility = View.GONE
         }
     }
 
