@@ -53,6 +53,9 @@
         <argument
             android:name="file"
             app:argType="java.io.File" />
+        <action
+            android:id="@+id/action_overwriteFileDialogFragment_to_entryFragment"
+            app:destination="@id/entryFragment" />
     </dialog>
 
 </navigation>
