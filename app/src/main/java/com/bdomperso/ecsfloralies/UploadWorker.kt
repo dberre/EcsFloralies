@@ -29,7 +29,6 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
             gd = GoogleDriveServices(appContext, account)
             Log.i(TAG, "OnStart: logged in")
         } else {
-            // TODO disable GUI
             Log.i(TAG, "OnStart: logged out")
         }
     }
@@ -38,9 +37,12 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
 
         val srcFilePath = inputData.getString("SrcFilePath")!!
         val destFilename = inputData.getString("DestFilename")!!
+        val overwrite = inputData.getBoolean("Overwrite", false)
 
         return try {
-            // TODO do not perform a preventive delete here ?
+            if (overwrite) {
+                gd.deleteImage(destFilename)
+            }
             gd.uploadImageFile(srcFilePath, destFilename, "ECS_2022")
 
             Result.success()
