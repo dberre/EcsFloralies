@@ -23,22 +23,16 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
 import android.hardware.display.DisplayManager
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.webkit.MimeTypeMap
+import android.view.*
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.core.ImageCapture.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
@@ -55,9 +49,6 @@ import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
-
-/** Helper type alias used for analysis use case callbacks */
-//typealias LumaListener = (luma: Double) -> Unit
 
 /**
  * Main fragment for this app. Implements all camera operations including:
@@ -224,29 +215,31 @@ class CameraFragment : Fragment() {
 
         val rotation = fragmentCameraBinding.viewFinder.display.rotation
 
-        // CameraProvider
         val cameraProvider = cameraProvider
             ?: throw IllegalStateException("Camera initialization failed.")
 
-        // CameraSelector
         val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
-        val imageSize = Size(640, 480)  // TODO
-//        val imageSize = Size(480, 640)  // TODO
+        val imageSize = if (screenAspectRatio == AspectRatio.RATIO_16_9) {
+            if (rotation == Surface.ROTATION_0) {
+                Size(540, 960)
+            } else {
+                Size(960, 540)
+            }
+        } else {
+            if (rotation == Surface.ROTATION_0) {
+                Size(768, 1024)
+            } else {
+                Size(1024, 768)
+            }
+        }
 
-//      Surface.ROTATION_0 et Size(640, 480)
-//      ResolutionInfo: ResolutionInfo{resolution=1152x1152, cropRect=Rect(0, 144 - 1152, 1008), rotationDegrees=90}
-
-        // Preview
         preview = Preview.Builder()
-            // We request aspect ratio but no resolution
 //            .setTargetAspectRatio(screenAspectRatio)
             .setTargetResolution(imageSize)
-            // Set initial target rotation
             .setTargetRotation(rotation)
             .build()
 
-        // ImageCapture
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             .setTargetResolution(imageSize)
@@ -256,8 +249,8 @@ class CameraFragment : Fragment() {
             // Set initial target rotation, we will have to call this again if rotation changes
             // during the lifecycle of this use case
             .setTargetRotation(rotation)
-            .setFlashMode(flashMode)
             .build()
+        imageCapture!!.flashMode = flashMode
 
         // Must unbind the use-cases before rebinding them
         cameraProvider.unbindAll()
@@ -272,6 +265,8 @@ class CameraFragment : Fragment() {
             // camera provides access to CameraControl & CameraInfo
             camera = cameraProvider.bindToLifecycle(
                 this, cameraSelector, preview, imageCapture)
+
+//            camera?.cameraControl?.enableTorch(true)
 
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(fragmentCameraBinding.viewFinder.surfaceProvider)
@@ -468,20 +463,6 @@ class CameraFragment : Fragment() {
                         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                             savedUri = output.savedUri?.let { uri ->
                                 Log.d(TAG, "Photo capture succeeded: $uri")
-
-                                // If the folder selected is an external media directory, this is
-                                // unnecessary but otherwise other apps will not be able to access our
-                                // images unless we scan them using [MediaScannerConnection]
-                                val mimeType = MimeTypeMap.getSingleton()
-                                    .getMimeTypeFromExtension(uri.toFile().extension
-                                        ?: "TODO")
-                                MediaScannerConnection.scanFile(
-                                    context,
-                                    arrayOf(uri.toFile().absolutePath),
-                                    arrayOf(mimeType)
-                                ) { _, mediaStoreUri ->
-                                    Log.d(TAG, "Image capture scanned into media store: $mediaStoreUri")
-                                }
                                 uri
                             }
                             cameraUiContainerBinding?.photoViewButton?.isClickable = (savedUri != null)
