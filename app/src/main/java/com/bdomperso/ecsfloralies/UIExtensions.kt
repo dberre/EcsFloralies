@@ -47,11 +47,14 @@ fun ImageView.setSrcURI(uri: Uri) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
             BitmapFactory.decodeFile(uri.path).also { bitmap ->
-                Log.i("BindingAdapter", "setSrcURI ${uri.path} size: ${bitmap.width} ${bitmap.height}")
+                val resizedBitmap = getResizedBitmap(bitmap, 960)
+                Log.i("BindingAdapter", "setSrcURI resized ${uri.path} size: ${resizedBitmap.width} ${resizedBitmap.height}")
                 withContext(Dispatchers.Main) {
                     var matrix = Matrix()
-                    matrix.postRotate(if (bitmap.height > bitmap.width)  90f else 0f)
-                    setImageBitmap(Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true))
+                    matrix.postRotate(if (resizedBitmap.height > resizedBitmap.width)  90f else 0f)
+                    setImageBitmap(Bitmap.createBitmap(resizedBitmap,
+                        0, 0,
+                        resizedBitmap.width, resizedBitmap.height, matrix, true))
                 }
             }
         } catch (ex: Exception) {
@@ -87,4 +90,19 @@ fun ImageButton.simulateClick(delay: Long = ANIMATION_FAST_MILLIS) {
         invalidate()
         isPressed = false
     }, delay)
+}
+
+
+fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap {
+    var width = image.width
+    var height = image.height
+    val bitmapRatio = width.toFloat() / height.toFloat()
+    if (bitmapRatio > 1) {
+        width = maxSize
+        height = (width / bitmapRatio).toInt()
+    } else {
+        height = maxSize
+        width = (height * bitmapRatio).toInt()
+    }
+    return Bitmap.createScaledBitmap(image, width, height,true)
 }
