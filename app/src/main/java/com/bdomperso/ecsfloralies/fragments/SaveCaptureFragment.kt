@@ -1,12 +1,15 @@
 package com.bdomperso.ecsfloralies.fragments
 
 import android.content.ContentResolver
+import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -24,6 +27,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
 import java.io.File
+import java.util.*
+
 
 /**
  * This fragment ensures the ....
@@ -59,7 +64,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         Log.i(TAG, "onCreateView")
 
@@ -175,7 +180,20 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             }
             imageFile!!.renameTo(destFile)
 
-            sendToGoogleDrive(destFile, destFile.name, overwrite)
+            val mimeType = MimeTypeMap.getSingleton()
+                .getMimeTypeFromExtension(destFile.extension ?: "jpg")
+
+            // make the image available as a media content for other applications
+            MediaScannerConnection.scanFile(
+                context,
+                arrayOf(destFile.absolutePath),
+                arrayOf(mimeType)
+            ) { _, mediaStoreUri ->
+                Log.d(TAG, "Image capture scanned into media store: $mediaStoreUri")
+            }
+
+            val description = "Camera: ${getDeviceName()}"
+            sendToGoogleDrive(destFile, destFile.name, description, overwrite)
 
             true
         } catch (ex: SecurityException) {
@@ -184,16 +202,26 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         }
     }
 
-    private fun sendToGoogleDrive(srcFile: File, destFilename: String, overwrite: Boolean) {
+    private fun sendToGoogleDrive(srcFile: File, destFilename: String, description: String, overwrite: Boolean) {
         val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
             .setInputData(workDataOf(
                 Pair("SrcFilePath", srcFile.absolutePath),
                 Pair("DestFilename", destFilename),
+                Pair("Description", description),
                 Pair("Overwrite", overwrite)))
             .build()
         WorkManager.getInstance(requireContext()).enqueue(uploadWorkRequest)
     }
 
+    fun getDeviceName(): String {
+        val manufacturer = Build.MANUFACTURER
+        val model = Build.MODEL
+        return if (model.lowercase(Locale.getDefault()).startsWith(manufacturer.lowercase(Locale.getDefault()))) {
+            model
+        } else {
+            "${manufacturer.uppercase()} $model"
+        }
+    }
     private val defaultImageUri
         get() =
             Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
