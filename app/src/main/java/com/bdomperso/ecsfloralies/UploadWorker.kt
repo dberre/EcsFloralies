@@ -37,13 +37,14 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
 
         val srcFilePath = inputData.getString("SrcFilePath")!!
         val destFilename = inputData.getString("DestFilename")!!
+        val description = inputData.getString("Description")!!
         val overwrite = inputData.getBoolean("Overwrite", false)
 
         return try {
             if (overwrite) {
                 gd.deleteImage(destFilename)
             }
-            gd.uploadImageFile(srcFilePath, destFilename, "ECS_2022")
+            gd.uploadImageFile(srcFilePath, destFilename, "ECS_2022", description)
 
             Result.success()
         } catch (ex: ApiException) {
