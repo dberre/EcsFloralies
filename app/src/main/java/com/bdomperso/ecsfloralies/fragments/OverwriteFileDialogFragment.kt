@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.bdomperso.ecsfloralies.R
 import java.io.File
 
@@ -32,6 +33,7 @@ class OverwriteFileDialogFragment: DialogFragment() {
             builder.setMessage(getString(R.string.file_exsists_alert, file.name))
                 .setPositiveButton(R.string.yes) { _, _ ->
                     listener.onDialogPositiveClick(this, file)
+                    findNavController().navigate(OverwriteFileDialogFragmentDirections.actionOverwriteFileDialogFragmentToEntryFragment())
                 }
                 .setNegativeButton(R.string.no) { _, _ ->
                     listener.onDialogNegativeClick(this, file)
