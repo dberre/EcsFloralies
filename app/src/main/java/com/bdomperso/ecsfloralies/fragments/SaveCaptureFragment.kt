@@ -121,7 +121,13 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment, file: File) {
-        saveImage(true)
+        if (renameAndSave(file, true)) {
+            Toast.makeText(
+                requireContext(),
+                "Image ${file.name} créée dans Photos et sur Google Drive",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment, file: File) {
@@ -132,47 +138,49 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
 
         if (!imageFile!!.exists()) {
             Log.e(TAG, "${imageFile!!.absolutePath} file doesn't exist")
-            Toast.makeText(requireContext(), "Photo ${imageFile!!.absolutePath} non trouvée", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(),
+                "Photo ${imageFile!!.absolutePath} non trouvée",
+                Toast.LENGTH_LONG).show()
+            // TODO redirect to camera, Alert et Pop ?
             return
         }
 
-        // name of the file on Google Drive
-        val destFilename = _viewModel!!.filename.value ?: "BATX_ETX_FX_XX.jpg"
+        // full path of the destination file on Android local media storage
+        val destFile = File(imageFile!!.parent).resolve(
+            _viewModel!!.filename.value ?: "BATX_ETX_FX_XX.jpg")
 
-        // local File (on the device media storage)
-        val destFile = File(imageFile!!.parent).resolve(destFilename)
+        if (destFile.exists()) {
+            findNavController().navigate(
+                SaveCaptureFragmentDirections.actionSaveCaptureFragmentToOverwriteFileDialogFragment(
+                    destFile))
+            return
+        }
 
-        try {
-            if (destFile.exists()) {
-                if (overwrite) {
-                    destFile.delete()
-                } else {
-                    findNavController().navigate(
-                        SaveCaptureFragmentDirections.actionSaveCaptureFragmentToOverwriteFileDialogFragment(
-                        destFile))
-                    return
-                }
-            }
-
-            imageFile!!.renameTo(destFile)
-
-            sendToGoogleDrive(destFile, destFilename, overwrite)
-
+        if (renameAndSave(destFile, false)) {
             Toast.makeText(
                 requireContext(),
-                "Image $destFilename créée dans Photos et sur Google Drive",
+                "Image ${destFile.name} créée dans Photos et sur Google Drive",
                 Toast.LENGTH_LONG
             ).show()
+            findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
+        } else {
+            // TODO redirect to camera, Alert et Pop ?
+        }
+    }
 
-            // TODO find the right way instead of this ugly workaround
-            try {
-                findNavController().navigate(SaveCaptureFragmentDirections.actionSaveCaptureFragmentToEntryFragment())
-            } catch (ex: IllegalArgumentException) {
-                findNavController().navigate(OverwriteFileDialogFragmentDirections.actionOverwriteFileDialogFragmentToEntryFragment())
+    private fun renameAndSave(destFile: File, overwrite: Boolean): Boolean {
+        return try {
+            if (overwrite) {
+                destFile.delete()
             }
+            imageFile!!.renameTo(destFile)
 
+            sendToGoogleDrive(destFile, destFile.name, overwrite)
+
+            true
         } catch (ex: SecurityException) {
             Log.e(TAG, "saveImage: can't create local file ${destFile.name}: ${ex.message}")
+            false
         }
     }
 
