@@ -48,7 +48,7 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
     }
 
     @Throws(IOException::class, ApiException::class, NoSuchElementException::class)
-    fun uploadImageFile(filePath: String, title: String, parent: String) {
+    fun uploadImageFile(filePath: String, title: String, parent: String, description: String) {
 
 //        CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -57,7 +57,7 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
                 val body = com.google.api.services.drive.model.File()
                 body.name = title
                 body.parents = arrayListOf(parentFolder.id.toString())
-                body.description = "ECS 2022 image"
+                body.description = description
                 body.mimeType = "image/jpg"
                 val fileContent = File(filePath)
                 val mediaContent = FileContent("image/jpg", fileContent)
