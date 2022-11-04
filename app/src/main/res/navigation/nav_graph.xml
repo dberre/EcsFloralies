@@ -55,7 +55,9 @@
             app:argType="java.io.File" />
         <action
             android:id="@+id/action_overwriteFileDialogFragment_to_entryFragment"
-            app:destination="@id/entryFragment" />
+            app:destination="@id/entryFragment"
+            app:popUpTo="@id/entryFragment"
+            app:popUpToInclusive="true" />
     </dialog>
 
 </navigation>
