@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/dominiqueberre/.keystore')
+            storePassword 'Klm/*123'
+            keyAlias 'ecsfloralies'
+            keyPassword 'Klm/*123'
+        }
+    }
     namespace 'com.bdomperso.ecsfloralies'
     compileSdk 32
 
