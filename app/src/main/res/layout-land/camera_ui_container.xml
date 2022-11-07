@@ -31,10 +31,22 @@
         android:padding="@dimen/spacing_medium"
         android:scaleType="fitXY"
         android:background="@drawable/ic_outer_circle"
-        app:srcCompat="@drawable/flash"
+        app:srcCompat="@drawable/flashlight"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:contentDescription="Flash mode button" />
+
+    <TextView
+        android:id="@+id/flash_mode_label"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_xsmall"
+        android:gravity="center_vertical"
+        app:layout_constraintLeft_toRightOf="@id/flash_mode_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="Flash mode button"/>
 
     <ImageButton
         android:id="@+id/camera_capture_button"

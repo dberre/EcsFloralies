@@ -72,12 +72,16 @@ class CameraFragment : Fragment() {
 
     private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
-    private var flashMode: Int = FLASH_MODE_AUTO
+    private var flashMode = FlashModes.ON
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var windowInfoTracker: WindowInfoTracker
+
+    private enum class FlashModes {
+        OFF, ON, TORCH
+    }
 
     private val displayManager by lazy {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -202,6 +206,7 @@ class CameraFragment : Fragment() {
     }
 
     /** Declare and bind preview, capture and analysis use cases */
+    @SuppressLint("RestrictedApi")
     private fun bindCameraUseCases() {
 
         // Get screen metrics used to setup camera for full screen resolution
@@ -249,8 +254,10 @@ class CameraFragment : Fragment() {
             // Set initial target rotation, we will have to call this again if rotation changes
             // during the lifecycle of this use case
             .setTargetRotation(rotation)
+            .setFlashMode( if(flashMode == FlashModes.OFF) FLASH_MODE_OFF else FLASH_MODE_ON)
             .build()
-        imageCapture!!.flashMode = flashMode
+
+        Log.w(TAG, "flash mode ${this.flashMode}")
 
         // Must unbind the use-cases before rebinding them
         cameraProvider.unbindAll()
@@ -266,7 +273,7 @@ class CameraFragment : Fragment() {
             camera = cameraProvider.bindToLifecycle(
                 this, cameraSelector, preview, imageCapture)
 
-//            camera?.cameraControl?.enableTorch(true)
+            camera?.cameraControl?.enableTorch(flashMode == FlashModes.TORCH)
 
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(fragmentCameraBinding.viewFinder.surfaceProvider)
@@ -288,47 +295,22 @@ class CameraFragment : Fragment() {
                 when (cameraState.type) {
                     CameraState.Type.PENDING_OPEN -> {
                         // Ask the user to close other camera apps
-//                        Toast.makeText(
-//                            context,
-//                            "CameraState: Pending Open",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         Log.d(TAG,"CameraState: Pending Open")
                     }
                     CameraState.Type.OPENING -> {
                         // Show the Camera UI
-//                        Toast.makeText(
-//                            context,
-//                            "CameraState: Opening",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         Log.d(TAG,"CameraState: Opening")
                     }
                     CameraState.Type.OPEN -> {
                         // Setup Camera resources and begin processing
-//                        Toast.makeText(
-//                            context,
-//                            "CameraState: Open",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         Log.d(TAG,"CameraState: Open")
                     }
                     CameraState.Type.CLOSING -> {
                         // Close camera UI
-//                        Toast.makeText(
-//                            context,
-//                            "CameraState: Closing",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         Log.d(TAG,"CameraState: Closing")
                     }
                     CameraState.Type.CLOSED -> {
                         // Free camera resources
-//                        Toast.makeText(
-//                            context,
-//                            "CameraState: Closed",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
                         Log.d(TAG,"CameraState: Closed")
                     }
                 }
@@ -473,10 +455,24 @@ class CameraFragment : Fragment() {
 
         cameraUiContainerBinding?.flashModeButton?.setOnClickListener {
             flashMode = when (flashMode) {
-                FLASH_MODE_AUTO -> FLASH_MODE_OFF
-                else -> FLASH_MODE_AUTO
+                FlashModes.OFF -> FlashModes.ON
+                FlashModes.ON -> FlashModes.TORCH
+                else -> FlashModes.OFF
             }
             bindCameraUseCases()
+
+            cameraUiContainerBinding?.flashModeLabel?.text = when (flashMode) {
+                FlashModes.OFF -> "Off"
+                FlashModes.ON -> "On"
+                else -> "Torche"
+            }
+        }
+
+
+        cameraUiContainerBinding?.flashModeLabel?.text = when (flashMode) {
+            FlashModes.OFF -> "Off"
+            FlashModes.ON -> "On"
+            else -> "Torche"
         }
 
         cameraUiContainerBinding?.photoViewButton?.setOnClickListener {
