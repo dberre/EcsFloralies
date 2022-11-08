@@ -240,7 +240,6 @@ class CameraFragment : Fragment() {
         }
 
         preview = Preview.Builder()
-//            .setTargetAspectRatio(screenAspectRatio)
             .setTargetResolution(imageSize)
             .setTargetRotation(rotation)
             .build()
@@ -248,11 +247,6 @@ class CameraFragment : Fragment() {
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             .setTargetResolution(imageSize)
-            // We request aspect ratio but no resolution to match preview config, but letting
-            // CameraX optimize for whatever specific resolution best fits our use cases
-//            .setTargetAspectRatio(screenAspectRatio)
-            // Set initial target rotation, we will have to call this again if rotation changes
-            // during the lifecycle of this use case
             .setTargetRotation(rotation)
             .setFlashMode( if(flashMode == FlashModes.OFF) FLASH_MODE_OFF else FLASH_MODE_ON)
             .build()
@@ -467,7 +461,6 @@ class CameraFragment : Fragment() {
                 else -> "Torche"
             }
         }
-
 
         cameraUiContainerBinding?.flashModeLabel?.text = when (flashMode) {
             FlashModes.OFF -> "Off"
