@@ -9,13 +9,13 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('/Users/dominiqueberre/StudioProjects/.keystore')
+            storeFile file('.keystore')
             storePassword 'SG423SBL'
             keyPassword 'SG423SBL'
             keyAlias 'ecsfloraliesksign'
         }
         release {
-            storeFile file('/Users/dominiqueberre/StudioProjects/.keystore')
+            storeFile file('.keystore')
             storePassword 'SG423SBL'
             keyAlias 'ecsfloraliesksign'
             keyPassword 'SG423SBL'
