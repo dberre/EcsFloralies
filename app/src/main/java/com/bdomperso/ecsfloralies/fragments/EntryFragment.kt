@@ -50,7 +50,7 @@ class EntryFragment : Fragment() {
 
     private var observer: FileObserver? = null
 
-    // This is the path where the Depstech-View app is saving the image (with Android 7, and for later ? TODO)
+    // This is the path where the Depstech-View app is saving the image (checked with Android 7)
     private val pathToWatch = File("/sdcard/DCIM/DEPSTECH_View")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,7 +118,6 @@ class EntryFragment : Fragment() {
         }
         updateUI(account)
 
-        // TODO is this the best place ?
         checkCameraPermission()
         checkStoragePermissions()
     }
