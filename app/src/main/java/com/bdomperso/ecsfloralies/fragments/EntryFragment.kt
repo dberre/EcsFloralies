@@ -119,6 +119,7 @@ class EntryFragment : Fragment() {
         updateUI(account)
 
         // TODO is this the best place ?
+        checkCameraPermission()
         checkStoragePermissions()
     }
 
@@ -244,7 +245,10 @@ class EntryFragment : Fragment() {
             )
             return false
         }
+        return true
+    }
 
+    private fun checkCameraPermission(): Boolean {
         val cameraPermission = ActivityCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.CAMERA
@@ -258,7 +262,6 @@ class EntryFragment : Fragment() {
             )
             return false
         }
-
         return true
     }
 
