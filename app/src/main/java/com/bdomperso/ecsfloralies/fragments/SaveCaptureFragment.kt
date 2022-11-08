@@ -1,8 +1,6 @@
 package com.bdomperso.ecsfloralies.fragments
 
-import android.content.ContentResolver
 import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -50,7 +47,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         super.onCreate(savedInstanceState)
 
         imageFile = if (arguments != null) {
-            val imagePath = requireArguments().getString("photoPath")
+            val imagePath = requireArguments().getString("photoPath")!!
             File(imagePath)
         } else {
             null
@@ -86,12 +83,14 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             lifecycleOwner = viewLifecycleOwner
         }
 
-        view.findViewById<Button>(R.id.saveImageButton).setOnClickListener {
-            saveImage(false)
+        _binding?.saveImageButton?.setOnClickListener {
+            saveImage()
         }
 
+        _binding?.saveImageButton?.isEnabled = (imageFile != null)
+
         if (imageFile?.absolutePath != null) {
-            _viewModel!!.image = imageFile?.absolutePath!! // TODO
+            _viewModel!!.image = imageFile?.absolutePath!!
         }
     }
 
@@ -120,7 +119,6 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             gd = GoogleDriveServices(requireContext(), account)
             Log.i(TAG, "OnStart: logged in")
         } else {
-            // TODO disable GUI
             Log.i(TAG, "OnStart: logged out")
         }
     }
@@ -139,7 +137,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         // nothing to do here for now
     }
 
-    private fun saveImage(overwrite: Boolean) {
+    private fun saveImage() {
 
         if (!imageFile!!.exists()) {
             Log.e(TAG, "${imageFile!!.absolutePath} file doesn't exist")
@@ -151,7 +149,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         }
 
         // full path of the destination file on Android local media storage
-        val destFile = File(imageFile!!.parent).resolve(
+        val destFile = File(imageFile!!.parent!!).resolve(
             _viewModel!!.filename.value ?: "BATX_ETX_FX_XX.jpg")
 
         if (destFile.exists()) {
@@ -181,7 +179,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             imageFile!!.renameTo(destFile)
 
             val mimeType = MimeTypeMap.getSingleton()
-                .getMimeTypeFromExtension(destFile.extension ?: "jpg")
+                .getMimeTypeFromExtension(destFile.extension)
 
             // make the image available as a media content for other applications
             MediaScannerConnection.scanFile(
@@ -213,7 +211,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         WorkManager.getInstance(requireContext()).enqueue(uploadWorkRequest)
     }
 
-    fun getDeviceName(): String {
+    private fun getDeviceName(): String {
         val manufacturer = Build.MANUFACTURER
         val model = Build.MODEL
         return if (model.lowercase(Locale.getDefault()).startsWith(manufacturer.lowercase(Locale.getDefault()))) {
@@ -222,10 +220,4 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             "${manufacturer.uppercase()} $model"
         }
     }
-    private val defaultImageUri
-        get() =
-            Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                requireContext().resources.getResourcePackageName(R.drawable.no_image_available) + '/' +
-                requireContext().resources.getResourceTypeName(R.drawable.no_image_available) + '/' +
-                requireContext().resources.getResourceEntryName(R.drawable.no_image_available))
 }
