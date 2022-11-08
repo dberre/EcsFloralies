@@ -43,14 +43,13 @@ fun Spinner.setItemSelectedListener(listener: ItemSelectedListener?) {
 
 @BindingAdapter("srcUri")
 fun ImageView.setSrcURI(uri: Uri) {
-    // TODO more smart structure ?
     CoroutineScope(Dispatchers.IO).launch {
         try {
             BitmapFactory.decodeFile(uri.path).also { bitmap ->
                 val resizedBitmap = getResizedBitmap(bitmap, 960)
                 Log.i("BindingAdapter", "setSrcURI resized ${uri.path} size: ${resizedBitmap.width} ${resizedBitmap.height}")
                 withContext(Dispatchers.Main) {
-                    var matrix = Matrix()
+                    val matrix = Matrix()
                     matrix.postRotate(if (resizedBitmap.height > resizedBitmap.width)  90f else 0f)
                     setImageBitmap(Bitmap.createBitmap(resizedBitmap,
                         0, 0,
