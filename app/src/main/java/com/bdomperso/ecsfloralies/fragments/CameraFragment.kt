@@ -40,6 +40,7 @@ import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowMetricsCalculator
 import com.bdomperso.ecsfloralies.KEY_EVENT_ACTION
 import com.bdomperso.ecsfloralies.KEY_EVENT_EXTRA
+import com.bdomperso.ecsfloralies.R
 import com.bdomperso.ecsfloralies.databinding.CameraUiContainerBinding
 import com.bdomperso.ecsfloralies.databinding.FragmentCameraBinding
 import com.bdomperso.ecsfloralies.simulateClick
@@ -128,6 +129,11 @@ class CameraFragment : Fragment() {
         // Unregister the broadcast receivers and listeners
         broadcastManager.unregisterReceiver(volumeDownReceiver)
         displayManager.unregisterDisplayListener(displayListener)
+
+        with (activity?.getPreferences(Context.MODE_PRIVATE)!!.edit()) {
+            putString(getString(R.string.saved_flash_mode), flashMode.name)
+            apply()
+        }
     }
 
     override fun onCreateView(
@@ -138,6 +144,11 @@ class CameraFragment : Fragment() {
 
         if (arguments != null) {
             photoFile = requireArguments().getSerializable("photoFile") as File
+        }
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        if (sharedPref != null) {
+            flashMode = FlashModes.valueOf(sharedPref!!.getString(getString(R.string.saved_flash_mode), FlashModes.ON.name)!!)
         }
 
         _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
