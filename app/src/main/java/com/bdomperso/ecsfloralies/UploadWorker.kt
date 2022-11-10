@@ -42,9 +42,9 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
 
         return try {
             if (overwrite) {
-                gd.deleteImage(destFilename)
+                gd.deleteImage(destFilename, "ECS_2022")
             }
-            gd.uploadImageFile(srcFilePath, destFilename, "ECS_2022", description)
+            gd.uploadImageFile(srcFilePath, destFilename, description,"ECS_2022")
 
             Result.success()
         } catch (ex: ApiException) {
