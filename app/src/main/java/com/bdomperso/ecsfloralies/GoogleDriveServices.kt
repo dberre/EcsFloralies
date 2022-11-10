@@ -44,31 +44,56 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
         }
     }
 
-    @Throws(IOException::class, ApiException::class, NoSuchElementException::class)
-    fun uploadImageFile(filePath: String, title: String, parent: String, description: String) {
-            try {
-                val parentFolder = searchFolders(parent).first()
-
-                val body = com.google.api.services.drive.model.File()
-                body.name = title
-                body.parents = arrayListOf(parentFolder.id.toString())
-                body.description = description
-                body.mimeType = "image/jpg"
-                val fileContent = File(filePath)
-                val mediaContent = FileContent("image/jpg", fileContent)
-
-                val file = service!!.files().create(body, mediaContent).execute()
-                Log.i(TAG, "remote file name: ${file.id}")
-            } catch (ex: ApiException) {
-                Log.e(TAG, "uploadImageFile: ${ex.message}")
-                throw ex
-            } catch (ex: NoSuchElementException) {
-                Log.e(TAG, "UploadImageFile: remote folder $parent ${ex.message}")
-                throw ex
-            } catch (ex: IOException) {
-                Log.e(TAG, "UploadImageFile: ${ex.message}")
-                throw ex
+    @Throws(IOException::class, ApiException::class)
+    fun uploadImageFile(filePath: String, title: String, description: String, parent: String? = null) {
+        try {
+            val body = com.google.api.services.drive.model.File()
+            body.name = title
+            if (parent != null) {
+                body.parents = arrayListOf(safelyGetParentFolder(parent).id.toString())
             }
+            body.description = description
+            body.mimeType = "image/jpg"
+            val fileContent = File(filePath)
+            val mediaContent = FileContent("image/jpg", fileContent)
+
+            val file = service!!.files().create(body, mediaContent).execute()
+            Log.i(TAG, "remote file name: ${file.id}")
+        } catch (ex: ApiException) {
+            Log.e(TAG, "uploadImageFile: ${ex.message}")
+            throw ex
+        } catch (ex: IOException) {
+            Log.e(TAG, "UploadImageFile: ${ex.message}")
+            throw ex
+        }
+    }
+
+    @Throws(IOException::class, ApiException::class, NoSuchElementException::class)
+    fun safelyGetParentFolder(folderName: String): com.google.api.services.drive.model.File {
+        return try {
+            searchFolders(folderName).first()
+        } catch (ex: NoSuchElementException) {
+            Log.e(TAG, "safelyGetParentFolder: folder $folderName does not exist, try to create it")
+            createFolder(folderName)
+        }
+    }
+
+    @Throws(IOException::class, ApiException::class)
+    fun createFolder(name: String): com.google.api.services.drive.model.File {
+        try {
+            val body = com.google.api.services.drive.model.File()
+            body.name = name
+            body.mimeType = "application/vnd.google-apps.folder"
+            val folder = service!!.files().create(body).execute()
+            Log.i(TAG, "remote folder id: ${folder.id}")
+            return folder
+        } catch (ex: ApiException) {
+            Log.e(TAG, "createFolder: ${ex.message}")
+            throw ex
+        } catch (ex: IOException) {
+            Log.e(TAG, "createFolder: ${ex.message}")
+            throw ex
+        }
     }
 
     /**
@@ -116,28 +141,36 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
     }
 
     @Throws(IOException::class)
-    fun searchImage(name: String): List<com.google.api.services.drive.model.File> {
+    fun searchImages(name: String, parent: String? = null): List<com.google.api.services.drive.model.File> {
             val result = ArrayList<com.google.api.services.drive.model.File>()
             val request = service!!.files().list()
             do {
                 try {
-                    val query = "mimeType contains 'image/' and name = '$name'"
+                    var query = "mimeType contains 'image/' and name = '$name'"
+                    if (parent != null) {
+                        val folderId = searchFolders(parent).first().id
+                        query += " and '$folderId' in parents"
+                    }
                     val files = request
                         .setQ(query)
                         .execute()
                     result.addAll(files.files)
                     request.pageToken = files.nextPageToken
-                } catch (e: IOException) {
-                    Log.e(TAG, "searchImage: ${e.message} $e.")
-                    throw e
+                } catch (ex: IOException) {
+                    Log.e(TAG, "searchImages: ${ex.message}")
+                    throw ex
+                } catch (ex: NoSuchElementException) {
+                    Log.e(TAG, "searchImages: folder $parent not found")
+                    // no rethrow here, just return the empty result
+                    return result
                 }
             } while (request.pageToken != null && request.pageToken.isNotEmpty())
             return result
     }
 
-    fun deleteImage(fileName: String) {
+    fun deleteImage(fileName: String, parent: String? = null) {
         try {
-            val files = searchImage(fileName)
+            val files = searchImages(fileName, parent)
             files.forEach {
                 service!!.files().delete(it.id).execute()
                 Log.i(TAG, "image ${it.name} id:${it.id} deleted")
