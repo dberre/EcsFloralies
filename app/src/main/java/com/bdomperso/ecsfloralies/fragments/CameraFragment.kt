@@ -159,6 +159,8 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        savedInstanceState?.let { bundle -> bundle.getString(getString(R.string.saved_uri))?.let { strUri -> savedUri = Uri.parse(strUri) } }
+
         // Initialize our background executor
         cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -186,6 +188,12 @@ class CameraFragment : Fragment() {
             // Set up the camera and its use cases
             setUpCamera()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        savedUri?.let { outState.putString(getString(R.string.saved_uri), it.path) }
     }
 
     /**
@@ -452,7 +460,10 @@ class CameraFragment : Fragment() {
                                 Log.d(TAG, "Photo capture succeeded: $uri")
                                 uri
                             }
-                            cameraUiContainerBinding?.photoViewButton?.isClickable = (savedUri != null)
+                            activity?.runOnUiThread {
+                                cameraUiContainerBinding?.photoViewButton?.isEnabled =
+                                    (savedUri != null)
+                            }
                         }
                     })
             }
@@ -486,6 +497,7 @@ class CameraFragment : Fragment() {
                 this.findNavController().navigate(action)
             }
         }
+        cameraUiContainerBinding?.photoViewButton?.isEnabled = (savedUri != null)
     }
 
     companion object {
