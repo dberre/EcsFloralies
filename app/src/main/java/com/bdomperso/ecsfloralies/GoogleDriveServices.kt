@@ -7,7 +7,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.FileContent
 import com.google.api.client.http.javanet.NetHttpTransport
-import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import java.io.File
@@ -31,7 +31,7 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
 
         service = Drive.Builder(
             NetHttpTransport(),
-            JacksonFactory.getDefaultInstance(),
+            GsonFactory.getDefaultInstance(),
             credential
         )
             .setApplicationName(java.lang.String.valueOf(R.string.app_name))
