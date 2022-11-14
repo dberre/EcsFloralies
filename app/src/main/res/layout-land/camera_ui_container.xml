@@ -27,13 +27,13 @@
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_medium"
         android:layout_marginEnd="@dimen/margin_xlarge"
-        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
         android:padding="@dimen/spacing_medium"
         android:scaleType="fitXY"
         android:background="@drawable/ic_outer_circle"
         app:srcCompat="@drawable/flashlight"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/camera_capture_button"
         android:contentDescription="Flash mode button" />
 
     <TextView
@@ -65,13 +65,13 @@
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_medium"
         android:layout_marginEnd="@dimen/margin_xlarge"
-        android:layout_marginTop="@dimen/margin_small"
-        android:padding="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:padding="@dimen/spacing_medium"
         android:scaleType="fitXY"
         android:background="@drawable/ic_outer_circle"
-        app:srcCompat="@drawable/checkmark"
+        android:src="@drawable/ic_image_button_states"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/camera_capture_button"
         android:contentDescription="Save image button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
