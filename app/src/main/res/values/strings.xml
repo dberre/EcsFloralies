@@ -22,4 +22,5 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <string name="saved_flash_mode">flash_mode</string>
+    <string name="saved_uri">saved_uri</string>
 </resources>
