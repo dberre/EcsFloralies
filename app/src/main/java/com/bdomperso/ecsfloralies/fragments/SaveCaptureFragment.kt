@@ -16,6 +16,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.bdomperso.ecsfloralies.GoogleDriveServices
+import com.bdomperso.ecsfloralies.MainActivity
 import com.bdomperso.ecsfloralies.R
 import com.bdomperso.ecsfloralies.UploadWorker
 import com.bdomperso.ecsfloralies.databinding.FragmentSaveCaptureBinding
@@ -149,7 +150,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         }
 
         // full path of the destination file on Android local media storage
-        val destFile = File(imageFile!!.parent!!).resolve(
+        val destFile = MainActivity.getOutputDirectory(requireContext()).resolve(
             _viewModel!!.filename.value ?: "BATX_ETX_FX_XX.jpg")
 
         if (destFile.exists()) {
@@ -176,7 +177,18 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             if (overwrite) {
                 destFile.delete()
             }
-            imageFile!!.renameTo(destFile)
+
+            val photoSource: String
+            if (imageFile!!.parent == MainActivity.getOutputDirectory(requireContext()).absolutePath) {
+                // the photo is already in the expected folder, capture by internal camera, just rename it
+                imageFile!!.renameTo(destFile)
+                photoSource = "camera"
+            } else {
+                // move the photo to the expected folder (was captured by the external application in another folder)
+                imageFile!!.copyTo(destFile)
+                imageFile!!.delete()
+                photoSource = "endoscope"
+            }
 
             val mimeType = MimeTypeMap.getSingleton()
                 .getMimeTypeFromExtension(destFile.extension)
@@ -190,7 +202,7 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
                 Log.d(TAG, "Image capture scanned into media store: $mediaStoreUri")
             }
 
-            val description = "Camera: ${getDeviceName()}"
+            val description = "Smartphone: ${getDeviceName()}\nPhoto: ${imageFile!!.name}\nSource: $photoSource"
             sendToGoogleDrive(destFile, destFile.name, description, overwrite)
 
             true
