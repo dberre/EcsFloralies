@@ -51,7 +51,7 @@ class EntryFragment : Fragment() {
     private var observer: FileObserver? = null
 
     // This is the path where the Depstech-View app is saving the image (checked with Android 7)
-    private val pathToWatch = File("/sdcard/DCIM/DEPSTECH_View")
+    private val pathToWatch = File("/storage/emulated/0/DCIM/DEPSTECH_View")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,7 +161,7 @@ class EntryFragment : Fragment() {
 
     private fun launchEndoscopeCapture() {
         val packageName = "com.ipotensic.depstech"
-//        val packageName = "org.o7planning.simulatedepstech"
+//        val packageName = "com.bdomperso.simulatedepstech"
 
         try {
             val pm = requireContext().packageManager
