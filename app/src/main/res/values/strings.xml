@@ -23,4 +23,6 @@
 
     <string name="saved_flash_mode">flash_mode</string>
     <string name="saved_uri">saved_uri</string>
+
+    <string name="account_email">[%s]</string>
 </resources>
