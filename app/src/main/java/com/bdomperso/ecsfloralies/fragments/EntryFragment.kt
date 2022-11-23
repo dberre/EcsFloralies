@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -41,6 +42,7 @@ class EntryFragment : Fragment() {
     private val RC_SIGN_IN = 9001
     private val TAG = "EntryFragment"
 
+    private lateinit var accountEmailText: TextView
     private lateinit var signInButton: Button
     private lateinit var signOutButton: Button
     private lateinit var endoscopeButton: Button
@@ -85,6 +87,8 @@ class EntryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        accountEmailText = view.findViewById(R.id.account_email)
+
         signInButton = view.findViewById(R.id.signInButton)
         signInButton.setOnClickListener {
             signIn()
@@ -112,7 +116,7 @@ class EntryFragment : Fragment() {
         // Check if the user is already signed in and all required scopes are granted
         val account = GoogleSignIn.getLastSignedInAccount(requireContext())
         if (account != null && GoogleSignIn.hasPermissions(account, Scope(Scopes.DRIVE_FILE))) {
-            Log.i(TAG, "already logged in")
+            Log.i(TAG, "already logged in with: ${account.email}")
         } else {
             Log.i(TAG, "logged out")
         }
@@ -195,11 +199,14 @@ class EntryFragment : Fragment() {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
+            accountEmailText.visibility = View.VISIBLE
+            accountEmailText.text = getString(R.string.account_email, account.email)
             signInButton.visibility = View.GONE
             signOutButton.visibility = View.VISIBLE
             cameraButton.visibility = View.VISIBLE
             endoscopeButton.visibility = View.VISIBLE
         } else {
+            accountEmailText.visibility = View.GONE
             signInButton.visibility = View.VISIBLE
             signOutButton.visibility = View.GONE
             cameraButton.visibility = View.GONE
