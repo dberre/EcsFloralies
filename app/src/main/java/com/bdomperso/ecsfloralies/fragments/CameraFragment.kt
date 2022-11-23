@@ -30,7 +30,6 @@ import android.util.Size
 import android.view.*
 import android.widget.Toast
 import androidx.camera.core.*
-import androidx.camera.core.ImageCapture.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -267,7 +266,7 @@ class CameraFragment : Fragment() {
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             .setTargetResolution(imageSize)
             .setTargetRotation(rotation)
-            .setFlashMode( if(flashMode == FlashModes.OFF) FLASH_MODE_OFF else FLASH_MODE_ON)
+            .setFlashMode( if(flashMode == FlashModes.OFF) ImageCapture.FLASH_MODE_OFF else ImageCapture.FLASH_MODE_ON)
             .build()
 
         Log.w(TAG, "flash mode ${this.flashMode}")
@@ -437,20 +436,20 @@ class CameraFragment : Fragment() {
             imageCapture?.let { imageCapture ->
 
                 // Setup image capture metadata
-                val metadata = Metadata().apply {
+                val metadata = ImageCapture.Metadata().apply {
 
                     // Mirror image when using the front camera
                     isReversedHorizontal = false
                 }
 
                 // Create output options object which contains file + metadata
-                val outputOptions = OutputFileOptions.Builder(photoFile)
+                val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile)
                     .setMetadata(metadata)
                     .build()
 
                 // Setup image capture listener which is triggered after photo has been taken
                 imageCapture.takePicture(
-                    outputOptions, cameraExecutor, object : OnImageSavedCallback {
+                    outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
                         override fun onError(exc: ImageCaptureException) {
                             Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                         }
