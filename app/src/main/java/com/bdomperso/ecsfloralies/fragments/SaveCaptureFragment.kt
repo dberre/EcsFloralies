@@ -1,5 +1,8 @@
 package com.bdomperso.ecsfloralies.fragments
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
@@ -15,16 +18,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.bdomperso.ecsfloralies.GoogleDriveServices
-import com.bdomperso.ecsfloralies.MainActivity
-import com.bdomperso.ecsfloralies.R
-import com.bdomperso.ecsfloralies.UploadWorker
+import com.bdomperso.ecsfloralies.*
 import com.bdomperso.ecsfloralies.databinding.FragmentSaveCaptureBinding
 import com.bdomperso.ecsfloralies.datamodel.DataModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
 import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 
@@ -178,17 +179,20 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
                 destFile.delete()
             }
 
-            val photoSource: String
-            if (imageFile!!.parent == MainActivity.getOutputDirectory(requireContext()).absolutePath) {
-                // the photo is already in the expected folder, capture by internal camera, just rename it
-                imageFile!!.renameTo(destFile)
-                photoSource = "camera"
+            // resize the bitmap do have an image size 960x540 in 16/9
+            val resizedBitmap = processImage(imageFile!!.absolutePath!!, 960)
+            if (resizedBitmap != null) {
+                persistImage(resizedBitmap, destFile.absolutePath)
             } else {
-                // move the photo to the expected folder (was captured by the external application in another folder)
+                // if the image can't be resized for whatever reason, then keep the original
                 imageFile!!.copyTo(destFile)
-                imageFile!!.delete()
-                photoSource = "endoscope"
             }
+            imageFile!!.delete()
+
+            // not perfect, but reasonable way to determine if the image comes from the internal
+            // camera or the external DEPSTECH USB endoscope
+            val photoSource = if (imageFile!!.parent == MainActivity.getOutputDirectory(requireContext()).absolutePath)
+                "camera"  else "endoscope"
 
             val mimeType = MimeTypeMap.getSingleton()
                 .getMimeTypeFromExtension(destFile.extension)
@@ -221,6 +225,48 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
                 Pair("Overwrite", overwrite)))
             .build()
         WorkManager.getInstance(requireContext()).enqueue(uploadWorkRequest)
+    }
+
+    private fun processImage(path: String, maxSize: Int): Bitmap? {
+        BitmapFactory.decodeFile(path).also { bitmap ->
+            var destWidth = bitmap.width
+            var destHeight = bitmap.height
+            val bitmapRatio = destWidth.toFloat() / destHeight.toFloat()
+            if (bitmapRatio > 1) {
+                destWidth = maxSize
+                destHeight = (destWidth / bitmapRatio).toInt()
+            } else {
+                destHeight = maxSize
+                destWidth = (destHeight * bitmapRatio).toInt()
+            }
+
+            val matrix = Matrix()
+            // only scaling down is wanted. If the image resolution is below, keep it unchanged.
+            if (destWidth < bitmap.width || destHeight < bitmap.height) {
+                val sx: Float = destWidth.toFloat() / bitmap.width.toFloat()
+                val sy: Float = destHeight.toFloat() / bitmap.height.toFloat()
+                matrix.setScale(sx, sy)
+            }
+
+            if (destHeight > destWidth) {
+                matrix.postRotate(90f)
+            }
+
+            return Bitmap.createBitmap(bitmap,0, 0, bitmap.width, bitmap.height, matrix, true)
+        }
+        return null
+    }
+
+    private fun persistImage(bitmap: Bitmap, name: String) {
+        try {
+            val os = FileOutputStream(name)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.flush()
+            os.close()
+        } catch (e: java.lang.Exception) {
+            Log.e(TAG, "persistImage: Error writing bitmap", e)
+            throw e
+        }
     }
 
     private fun getDeviceName(): String {
