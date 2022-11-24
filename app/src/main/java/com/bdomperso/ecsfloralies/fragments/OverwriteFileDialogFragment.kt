@@ -30,7 +30,7 @@ class OverwriteFileDialogFragment: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(getString(R.string.file_exsists_alert, file.name))
+            builder.setMessage(formattedMessage(file.name))
                 .setPositiveButton(R.string.yes) { _, _ ->
                     listener.onDialogPositiveClick(this, file)
                     findNavController().navigate(OverwriteFileDialogFragmentDirections.actionOverwriteFileDialogFragmentToEntryFragment())
@@ -51,5 +51,20 @@ class OverwriteFileDialogFragment: DialogFragment() {
         } catch (e: ClassCastException) {
             throw ClassCastException("The  must implement NoticeDialogListener")
         }
+    }
+
+    private fun formattedMessage(filename: String): String {
+        val matches = Regex("([ABC])_ET([01234])_(.*)_(.*)\\.").find(filename)
+        if ((matches != null) && (matches!!.groups.count() == 5)) {
+            return getString(
+                R.string.file_exsists_alert_full,
+                filename,
+                matches.groups[1]!!.value,
+                matches.groups[2]!!.value,
+                matches.groups[3]!!.value,
+                matches.groups[4]!!.value
+            )
+        }
+        return getString(R.string.file_exsists_alert, filename)
     }
 }
