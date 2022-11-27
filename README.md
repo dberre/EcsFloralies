@@ -22,10 +22,5 @@ situé à la racine
 L'endoscope est le modèle Depstech. L'application ECSFloralies lance l'applicaton Depstech-View
 
 
-
-// possible improvements
-deleteImage(fileName: String) specify the folder for securing the delete
-ImageView.setSrcURI(uri: Uri) more smart structure
-
 // DEPSTECH-VIEW logs:
 on J5: /sdcard/DEPSTECH_View/Logs
