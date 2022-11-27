@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EcsFloralies</string>
     <string name="file_exsists_alert">L\'image %1$s existe déjà. Voulez vous la remplacer?</string>
-    <string name="file_exsists_alert_full">"L\'image %s existe déjà\n - Batiment: %s\n - Etage: %s\n - Appartement:%s\n - Compteur:%s\n\n Voulez vous la remplacer?"</string>
+    <string name="file_exsists_alert_full">"L\'image %s existe déjà.\n - Batiment: %s\n - Etage: %s\n - Appartement: %s\n - Compteur: %s\n\n Voulez vous la remplacer?"</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
 
