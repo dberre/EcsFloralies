@@ -4,19 +4,19 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
   <path
-      android:pathData="M20,45h68v18h-68z"
+      android:pathData="M21,45h66v17.47h-66z"
       android:strokeWidth="2.5"
-      android:fillColor="#d3d3d3"
+      android:fillColor="#696969"
       android:strokeColor="#000000"/>
   <path
       android:pathData="M54,54m-28,0a28,28 0,1 1,56 0a28,28 0,1 1,-56 0"
       android:strokeWidth="3"
-      android:fillColor="#00ffff"
+      android:fillColor="#ff4500"
       android:strokeColor="#000000"/>
   <path
       android:pathData="M36,39h36v9.56h-36z"
       android:strokeWidth="2"
-      android:fillColor="#ffffff"
+      android:fillColor="#00ffff"
       android:strokeColor="#000000"/>
   <path
       android:pathData="M54,64m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"
