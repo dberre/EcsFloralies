@@ -171,7 +171,12 @@ class EntryFragment : Fragment() {
             val pm = requireContext().packageManager
             // the next call will throw a specific exception if the app not installed
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            startActivity(pm.getLaunchIntentForPackage(packageName))
+            val intent = pm.getLaunchIntentForPackage(packageName)
+            // after some experiments, it appears that this flags provide the expected behavior
+            // the Depstech app comes to foreground, have to tap "begin" on screen, but when
+            // tapping the capture button, the caller app EcsFloralies comes back to foreground
+            intent!!.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
             observer!!.startWatching()
 
         } catch (e: PackageManager.NameNotFoundException) {
