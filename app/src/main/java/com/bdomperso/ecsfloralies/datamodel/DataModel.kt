@@ -92,13 +92,9 @@ class DataModel(jsonTxt: String): ViewModel() {
 
     private fun printAll() {
         _buildings.value?.forEach { building ->
-            println("Bat: ${building.name}")
             building.stages.forEach{ stage ->
-                println("  Stage: ${stage.level}")
                 stage.apartments.forEach{ apartment ->
-                    println("    Apartment: ${apartment.type}")
-                    println("      Cpt1: ${apartment.counter1}")
-                    println("      Cpt2: ${apartment.counter2}")
+                    println("${building.name}\t${stage.level}\t${apartment.type}\t${apartment.counter1}\t${apartment.counter2}")
                 }
             }
         }
