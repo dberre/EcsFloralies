@@ -158,6 +158,7 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // useful is case of configuration change like device rotation
         savedInstanceState?.let { bundle -> bundle.getString(getString(R.string.saved_uri))?.let { strUri -> savedUri = Uri.parse(strUri) } }
 
         // Initialize our background executor
@@ -432,6 +433,10 @@ class CameraFragment : Fragment() {
         // Listener for button used to capture photo
         cameraUiContainerBinding?.cameraCaptureButton?.setOnClickListener {
 
+            // invalidate the previous image uri while capturing the new one
+            savedUri = null
+            cameraUiContainerBinding?.photoViewButton?.isEnabled = false
+
             // Get a stable reference of the modifiable image capture use case
             imageCapture?.let { imageCapture ->
 
@@ -490,6 +495,7 @@ class CameraFragment : Fragment() {
         }
 
         cameraUiContainerBinding?.photoViewButton?.setOnClickListener {
+            Log.w(TAG, "view button")
             if (savedUri != null) {
                 val action =
                     CameraFragmentDirections.actionCameraFragmentToSaveCaptureFragment(savedUri!!.path!!)
@@ -500,7 +506,7 @@ class CameraFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "CameraXBasic"
+        private const val TAG = "CameraFragment"
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
