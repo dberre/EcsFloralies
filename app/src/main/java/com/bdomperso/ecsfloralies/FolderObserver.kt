@@ -56,7 +56,10 @@ class FolderObserver(context: Context, pathToWatch: File) : FileObserver(pathToW
             mainThreadHandler.post(Runnable() {
                 val intent = Intent(context, MainActivity::class.java)
                 intent.putExtra("image_path", file.absolutePath)
-                intent.flags = FLAG_ACTIVITY_CLEAR_TOP or FLAG_ACTIVITY_NEW_TASK
+                // after some experiments, it appears that this flags provide the expected behavior
+                // the Depstech app comes to foreground, have to tap "begin" on screen, but when
+                // tapping the capture button, the caller app EcsFloralies comes back to foreground
+                intent.flags = FLAG_ACTIVITY_CLEAR_TOP
                 context.startActivity(intent)
             })
             // only one file is expected, so stop watching now
@@ -97,7 +100,7 @@ class FolderObserverLegacy(context: Context, pathToWatch: File) : FileObserver(p
                 // after some experiments, it appears that this flags provide the expected behavior
                 // the Depstech app comes to foreground, have to tap "begin" on screen, but when
                 // tapping the capture button, the caller app EcsFloralies comes back to foreground
-                intent.flags = FLAG_ACTIVITY_CLEAR_TOP or FLAG_ACTIVITY_NEW_TASK
+                intent.flags = FLAG_ACTIVITY_CLEAR_TOP
                 context.startActivity(intent)
             })
             // only one file is expected, so stop watching now

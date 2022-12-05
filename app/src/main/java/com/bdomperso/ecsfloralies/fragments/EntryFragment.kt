@@ -175,7 +175,7 @@ class EntryFragment : Fragment() {
             // after some experiments, it appears that this flags provide the expected behavior
             // the Depstech app comes to foreground, have to tap "begin" on screen, but when
             // tapping the capture button, the caller app EcsFloralies comes back to foreground
-            intent!!.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            intent!!.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
             observer!!.startWatching()
 
