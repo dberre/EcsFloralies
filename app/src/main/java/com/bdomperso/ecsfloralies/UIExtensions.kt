@@ -50,7 +50,7 @@ fun ImageView.setSrcURI(uri: Uri) {
                 Log.i("BindingAdapter", "setSrcURI resized ${uri.path} size: ${resizedBitmap.width} ${resizedBitmap.height}")
                 withContext(Dispatchers.Main) {
                     val matrix = Matrix()
-                    matrix.postRotate(if (resizedBitmap.height > resizedBitmap.width)  90f else 0f)
+                    matrix.postRotate(if (resizedBitmap.height > resizedBitmap.width) 90f else 0f)
                     setImageBitmap(Bitmap.createBitmap(resizedBitmap,
                         0, 0,
                         resizedBitmap.width, resizedBitmap.height, matrix, true))
@@ -90,7 +90,6 @@ fun ImageButton.simulateClick(delay: Long = ANIMATION_FAST_MILLIS) {
         isPressed = false
     }, delay)
 }
-
 
 fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap {
     var width = image.width
