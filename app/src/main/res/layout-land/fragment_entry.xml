@@ -74,16 +74,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Photo avec telephone"
-            tools:layout_editor_absoluteY="108dp" />
+            android:text="Photo avec telephone" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <Button
             android:id="@+id/endoscopeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Photo avec endoscope"
-            tools:layout_editor_absoluteY="212dp" />
+            android:text="Photo avec endoscope" />
 
     </LinearLayout>
 
