@@ -39,7 +39,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Batiment"
+                    android:text="@string/building_label"
                     android:textSize="20sp" />
 
                 <Spinner
@@ -68,7 +68,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Etage"
+                    android:text="@string/stage_label"
                     android:textSize="20sp" />
 
                 <Spinner
@@ -96,7 +96,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Appartement"
+                    android:text="@string/apartment_label"
                     android:textSize="20sp" />
 
                 <Spinner
@@ -124,14 +124,14 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Compteur"
+                    android:text="@string/device_label"
                     android:textSize="20sp" />
 
                 <Spinner
                     android:layout_width="150dp"
                     android:layout_height="?attr/dropdownListPreferredItemHeight"
-                    app:entries="@{viewmodel.filteredCounters}"
-                    app:onItemSelected="@{(newValue) -> viewmodel.setSelectedCounter(newValue)}"
+                    app:devicesEntries="@{viewmodel.filteredDevices}"
+                    app:onSelectedPosition="@{(newValue) -> viewmodel.setSelectedDeviceIndex(newValue)}"
                     android:background="@drawable/spinner_bg"
                     android:dropDownWidth="200dp"
                     android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"
@@ -151,7 +151,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Photo"
+                    android:text="@string/photo_label"
                     android:textSize="20sp" />
 
                 <TextView
@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Sauver la photo"
+                android:text="@string/save_photo_label"
                 android:padding="5dp"/>
 
         </LinearLayout>

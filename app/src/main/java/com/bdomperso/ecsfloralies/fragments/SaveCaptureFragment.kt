@@ -207,7 +207,8 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             }
 
             val description = "Smartphone: ${getDeviceName()}\nPhoto: ${imageFile!!.name}\nSource: $photoSource"
-            sendToGoogleDrive(destFile, destFile.name, description, overwrite)
+            val parentFolder = if(destFile.name.contains("VMC_")) "VMC_2022" else "ECS_2022"
+            sendToGoogleDrive(destFile, parentFolder, destFile.name, description, overwrite)
 
             true
         } catch (ex: SecurityException) {
@@ -216,10 +217,11 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
         }
     }
 
-    private fun sendToGoogleDrive(srcFile: File, destFilename: String, description: String, overwrite: Boolean) {
+    private fun sendToGoogleDrive(srcFile: File, parentFolder: String, destFilename: String, description: String, overwrite: Boolean) {
         val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
             .setInputData(workDataOf(
                 Pair("SrcFilePath", srcFile.absolutePath),
+                Pair("ParentFolder", parentFolder),
                 Pair("DestFilename", destFilename),
                 Pair("Description", description),
                 Pair("Overwrite", overwrite)))

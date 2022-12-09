@@ -36,15 +36,16 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
     override fun doWork(): Result {
 
         val srcFilePath = inputData.getString("SrcFilePath")!!
+        val parentFolder = inputData.getString("ParentFolder")!!
         val destFilename = inputData.getString("DestFilename")!!
         val description = inputData.getString("Description")!!
         val overwrite = inputData.getBoolean("Overwrite", false)
 
         return try {
             if (overwrite) {
-                gd.deleteImage(destFilename, "ECS_2022")
+                gd.deleteImage(destFilename, parentFolder)
             }
-            gd.uploadImageFile(srcFilePath, destFilename, description,"ECS_2022")
+            gd.uploadImageFile(srcFilePath, destFilename, description, parentFolder)
 
             Result.success()
         } catch (ex: ApiException) {

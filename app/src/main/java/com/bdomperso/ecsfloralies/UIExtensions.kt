@@ -24,6 +24,27 @@ fun Spinner.setSpinnerEntries(entries: List<Any>?) {
     }
 }
 
+@BindingAdapter("devicesEntries")
+fun Spinner.setSpinnerDevicesEntries(entries: List<Any>?) {
+    if (entries != null) {
+        val formattedEntries = entries.map {
+            when(it) {
+                "CUI" -> "ECS Cuisine"
+                "WC" -> "ECS WC"
+                "SDB" -> "ECS SDB"
+                "PLA" -> "ECS placard"
+                "VMC_CUI" -> "VMC cuisine"
+                "VMC_SDB" -> "VMC SDB"
+                "VMC_WC" -> "VMC WC"
+                else -> it
+            }
+        }
+        val arrayAdapter = ArrayAdapter(context, R.layout.custom_spinner, formattedEntries)
+        arrayAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown)
+        adapter = arrayAdapter
+    }
+}
+
 @BindingAdapter("onItemSelected")
 fun Spinner.setItemSelectedListener(listener: ItemSelectedListener?) {
     onItemSelectedListener = if (listener == null) {
@@ -33,6 +54,23 @@ fun Spinner.setItemSelectedListener(listener: ItemSelectedListener?) {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (tag != position) {
                     listener.onItemSelected(parent.getItemAtPosition(position))
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }
+}
+
+@BindingAdapter("onSelectedPosition")
+fun Spinner.setPositionSelectedListener(listener: PositionSelectedListener?) {
+    onItemSelectedListener = if (listener == null) {
+        null
+    } else {
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (tag != position) {
+                    listener.onPositionSelected(position)
                 }
             }
 
@@ -75,6 +113,10 @@ fun ImageView.setSrcURI(uri: Uri) {
 
 interface ItemSelectedListener {
     fun onItemSelected(item: Any)
+}
+
+interface PositionSelectedListener {
+    fun onPositionSelected(position: Int)
 }
 
 /**

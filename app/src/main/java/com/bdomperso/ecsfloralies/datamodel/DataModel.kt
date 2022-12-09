@@ -38,8 +38,9 @@ class DataModel(jsonTxt: String): ViewModel() {
         apartments.map { it.type }
     }
 
-    val filteredCounters = Transformations.map(_filteredApartment) { apartment ->
-        listOf(apartment.counter1, apartment.counter2)
+    val filteredDevices = Transformations.map(_filteredApartment) { apartment ->
+        listOf(apartment.counter1, apartment.counter2, "VMC_CUI", "VMC_SDB", "VMC_WC")
+        // TODO maybe theses 3 hardcoded input should be in the json even not variable
     }
 
     val filename: LiveData<String> = _filename
@@ -75,10 +76,10 @@ class DataModel(jsonTxt: String): ViewModel() {
             _filename.value = composeFilename()
         }
 
-    var selectedCounter: Any = ""
-        set(value) {
+    var selectedDeviceIndex: Int = 0
+        set (value) {
             field = value
-            Log.i(TAG, "selectedCounter: $value")
+            Log.i(TAG, "selectedDevicerIndex: $value")
             _filename.value = composeFilename()
         }
 
@@ -86,8 +87,8 @@ class DataModel(jsonTxt: String): ViewModel() {
         val building = this.selectedBuilding as String
         val stage = this.selectedStage as Int
         val apartment = this.selectedApartment as String
-        val counter = this.selectedCounter as String
-        return  "${building}_ET${stage}_${apartment}_${counter}.jpg"
+        val device = filteredDevices.value?.elementAt(this.selectedDeviceIndex)
+        return  "${building}_ET${stage}_${apartment}_${device}.jpg"
     }
 
     private fun printAll() {
