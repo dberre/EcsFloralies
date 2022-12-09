@@ -26,4 +26,14 @@
     <string name="saved_uri">saved_uri</string>
 
     <string name="account_email">[%s]</string>
+    <string name="photo_with_camera">Photo avec telephone</string>
+    <string name="photo_with_endoscope">Photo avec endoscope</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="building_label">Batiment</string>
+    <string name="stage_label">Etage</string>
+    <string name="apartment_label">Appartement</string>
+    <string name="device_label">Equipement</string>
+    <string name="save_photo_label">Sauver la photo</string>
+    <string name="photo_label">Photo</string>
 </resources>

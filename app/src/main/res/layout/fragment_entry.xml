@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sign In"
+            android:text="@string/sign_in"
             style="?android:attr/buttonBarButtonStyle" />
 
         <Button
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sign Out"
+            android:text="@string/sign_out"
             style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Photo avec telephone" />
+            android:text="@string/photo_with_camera" />
 
         <Space
             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Photo avec endoscope" />
+            android:text="@string/photo_with_endoscope" />
 
     </LinearLayout>
 
