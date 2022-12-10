@@ -7,7 +7,7 @@
           "level": 0,
           "apartments": [
             {
-              "type": "F2_LOGE",
+              "type": "F2_FACE_ASC",
               "counter1": "CUI",
               "counter2": "WC"
             },

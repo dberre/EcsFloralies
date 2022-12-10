@@ -29,13 +29,14 @@ fun Spinner.setSpinnerDevicesEntries(entries: List<Any>?) {
     if (entries != null) {
         val formattedEntries = entries.map {
             when(it) {
-                "CUI" -> "ECS Cuisine"
-                "WC" -> "ECS WC"
-                "SDB" -> "ECS SDB"
-                "PLA" -> "ECS placard"
-                "VMC_CUI" -> "VMC cuisine"
-                "VMC_SDB" -> "VMC SDB"
-                "VMC_WC" -> "VMC WC"
+                "CUI" -> context.getString(R.string.ecs_kitchen)
+                "WC" -> context.getString(R.string.ecs_wc)
+                "SDB" -> context.getString(R.string.ecs_bathroom)
+                "PLA" -> context.getString(R.string.ecs_cupboard)
+                "VMC_CUI" -> context.getString(R.string.vmc_kitchen)
+                "VMC_WC" -> context.getString(R.string.vmc_wc)
+                "VMC_SDB" -> context.getString(R.string.vmc_bathroom)
+                "VMC_SDB2" -> context.getString(R.string.vmc_other_bathroom)
                 else -> it
             }
         }

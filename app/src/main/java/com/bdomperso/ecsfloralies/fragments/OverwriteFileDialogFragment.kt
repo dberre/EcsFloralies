@@ -54,7 +54,7 @@ class OverwriteFileDialogFragment: DialogFragment() {
     }
 
     private fun formattedMessage(filename: String): String {
-        val matches = Regex("([ABC])_ET([01234])_(.*)_(.*)\\.").find(filename)
+        val matches = Regex("([ABC])_ET([01234])_(.+_ASC)_(.+)\\.").find(filename)
         if ((matches != null) && (matches!!.groups.count() == 5)) {
             return getString(
                 R.string.file_exsists_alert_full,
@@ -62,6 +62,8 @@ class OverwriteFileDialogFragment: DialogFragment() {
                 matches.groups[1]!!.value,
                 matches.groups[2]!!.value,
                 matches.groups[3]!!.value,
+                if (matches.groups[4]!!.value.contains("VMC_")) getString(R.string.vmc_exhaust) else getString(
+                                    R.string.ecs_counter),
                 matches.groups[4]!!.value
             )
         }

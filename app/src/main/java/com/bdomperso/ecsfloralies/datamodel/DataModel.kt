@@ -39,7 +39,7 @@ class DataModel(jsonTxt: String): ViewModel() {
     }
 
     val filteredDevices = Transformations.map(_filteredApartment) { apartment ->
-        listOf(apartment.counter1, apartment.counter2, "VMC_CUI", "VMC_SDB", "VMC_WC")
+        listOf(apartment.counter1, apartment.counter2, "VMC_CUI", "VMC_WC", "VMC_SDB", "VMC_SDB2")
         // TODO maybe theses 3 hardcoded input should be in the json even not variable
     }
 
