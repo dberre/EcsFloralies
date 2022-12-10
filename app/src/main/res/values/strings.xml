@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EcsFloralies</string>
     <string name="file_exsists_alert">L\'image %1$s existe déjà. Voulez vous la remplacer?</string>
-    <string name="file_exsists_alert_full">"L\'image %s existe déjà.\n - Batiment: %s\n - Etage: %s\n - Appartement: %s\n - Compteur: %s\n\n Voulez vous la remplacer?"</string>
+    <string name="file_exsists_alert_full">"L\'image %s existe déjà.\n - Batiment: %s\n - Etage: %s\n - Appartement: %s\n - %s: %s\n\n Voulez vous la remplacer?"</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
 
@@ -36,4 +36,14 @@
     <string name="device_label">Equipement</string>
     <string name="save_photo_label">Sauver la photo</string>
     <string name="photo_label">Photo</string>
+    <string name="ecs_kitchen">ECS Cuisine</string>
+    <string name="ecs_wc">ECS WC</string>
+    <string name="ecs_bathroom">ECS SDB</string>
+    <string name="ecs_cupboard">ECS placard</string>
+    <string name="vmc_kitchen">VMC cuisine</string>
+    <string name="vmc_wc">VMC WC</string>
+    <string name="vmc_bathroom">VMC salle bain</string>
+    <string name="vmc_other_bathroom">VMC deuxième salle bain</string>
+    <string name="vmc_exhaust">Bouche VMC</string>
+    <string name="ecs_counter">Compteur</string>
 </resources>
