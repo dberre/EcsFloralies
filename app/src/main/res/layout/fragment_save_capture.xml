@@ -36,7 +36,7 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/building_label"
@@ -44,7 +44,7 @@
 
                 <Spinner
                     android:id="@+id/buildingsList"
-                    android:layout_width="150dp"
+                    android:layout_width="170dp"
                     android:layout_height="?attr/dropdownListPreferredItemHeight"
                     app:entries="@{viewmodel.buildings}"
                     app:onItemSelected="@{(newValue) -> viewmodel.setSelectedBuilding(newValue)}"
@@ -65,7 +65,7 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/stage_label"
@@ -73,7 +73,7 @@
 
                 <Spinner
                     android:id="@+id/stagesList"
-                    android:layout_width="150dp"
+                    android:layout_width="170dp"
                     android:layout_height="?attr/dropdownListPreferredItemHeight"
                     app:entries="@{viewmodel.filteredStages}"
                     app:onItemSelected="@{(newValue) -> viewmodel.setSelectedStage(newValue)}"
@@ -93,7 +93,7 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/apartment_label"
@@ -101,7 +101,7 @@
 
                 <Spinner
                     android:id="@+id/apartmentsList"
-                    android:layout_width="150dp"
+                    android:layout_width="170dp"
                     android:layout_height="?attr/dropdownListPreferredItemHeight"
                     app:entries="@{viewmodel.filteredApartments}"
                     app:onItemSelected="@{(newValue) -> viewmodel.setSelectedApartment(newValue)}"
@@ -121,14 +121,14 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/device_label"
                     android:textSize="20sp" />
 
                 <Spinner
-                    android:layout_width="150dp"
+                    android:layout_width="170dp"
                     android:layout_height="?attr/dropdownListPreferredItemHeight"
                     app:devicesEntries="@{viewmodel.filteredDevices}"
                     app:onSelectedPosition="@{(newValue) -> viewmodel.setSelectedDeviceIndex(newValue)}"
@@ -155,7 +155,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:padding="5dp"
