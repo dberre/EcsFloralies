@@ -20,10 +20,10 @@ class ExampleUnitTest {
     fun filename_regex() {
         parseFilename(File("A_ET4_F2_FACE_ASC_SDB.jpg"))
         parseFilename(File("C_ET1_F2_MUR_ASC_CUI.jpg"))
+        parseFilenameAndTestSubparts()
     }
 
     private fun parseFilename(file: File) {
-//        val pattern = "([ABC])_ET([01234])_(.*)_(.*)"
         val pattern = "([ABC])_ET([01234])_(.*)_(.*)\\."
         val matches = Regex(pattern).find(file.name)
         if (matches != null) {
@@ -38,5 +38,27 @@ class ExampleUnitTest {
         } else {
             println("pattern no found")
         }
+    }
+
+    private fun parseFilenameAndTestSubparts() {
+        var pattern = "([ABC])_ET([01234])_(.+_ASC)_(.+)\\."
+        var matches = Regex(pattern).find("A_ET0_F2_FACE_ASC_VMC_CUI.jpg")
+        assert(matches != null)
+        assert(matches!!.groups.isNotEmpty())
+        assert(matches.groups.count() == 5)
+        assert(matches!!.groups[1]!!.value == "A")
+        assert(matches!!.groups[2]!!.value == "0")
+        assert(matches!!.groups[3]!!.value == "F2_FACE_ASC")
+        assert(matches!!.groups[4]!!.value == "VMC_CUI")
+
+        pattern = "([ABC])_ET([01234])_(.+_ASC)_(.+)\\."
+        matches = Regex(pattern).find("A_ET0_F2_FACE_ASC_SDB.jpg")
+        assert(matches != null)
+        assert(matches!!.groups.isNotEmpty())
+        assert(matches.groups.count() == 5)
+        assert(matches!!.groups[1]!!.value == "A")
+        assert(matches!!.groups[2]!!.value == "0")
+        assert(matches!!.groups[3]!!.value == "F2_FACE_ASC")
+        assert(matches!!.groups[4]!!.value == "SDB")
     }
 }
