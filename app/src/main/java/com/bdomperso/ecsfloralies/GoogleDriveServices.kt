@@ -73,7 +73,7 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
         return try {
             searchFolders(folderName).first()
         } catch (ex: NoSuchElementException) {
-            Log.e(TAG, "safelyGetParentFolder: folder $folderName does not exist, try to create it")
+            Log.w(TAG, "safelyGetParentFolder: folder $folderName does not exist, try to create it")
             createFolder(folderName)
         }
     }
@@ -160,7 +160,7 @@ class GoogleDriveServices(context: Context, googleAccount: GoogleSignInAccount) 
                     Log.e(TAG, "searchImages: ${ex.message}")
                     throw ex
                 } catch (ex: NoSuchElementException) {
-                    Log.e(TAG, "searchImages: folder $parent not found")
+                    Log.w(TAG, "searchImages: folder $parent not found")
                     // no rethrow here, just return the empty result
                     return result
                 }
