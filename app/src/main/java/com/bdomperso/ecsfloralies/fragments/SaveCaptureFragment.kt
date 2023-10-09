@@ -207,7 +207,8 @@ class SaveCaptureFragment : Fragment(), OverwriteFileDialogFragment.NoticeDialog
             }
 
             val description = "Smartphone: ${getDeviceName()}\nPhoto: ${imageFile!!.name}\nSource: $photoSource"
-            val parentFolder = if(destFile.name.contains("VMC_")) "VMC_2022" else "ECS_2022"
+            val year = Calendar.getInstance().get(Calendar.YEAR)
+            val parentFolder = if(destFile.name.contains("VMC_")) String.format("VMC_%d", year) else String.format("ECS_%d", year)
             sendToGoogleDrive(destFile, parentFolder, destFile.name, description, overwrite)
 
             true
